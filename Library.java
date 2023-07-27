@@ -10,6 +10,7 @@ public class Library {
     List<Staff> staff = new ArrayList<>();
     List<Book> books = new ArrayList<>();
     List<AudioVideoMaterial> avMaterials;
+    List<ItemRequest> itemRequestList = new ArrayList<>();
     Library(){
         scanner = new Scanner(System.in);
         System.out.println("new library made");
@@ -257,4 +258,34 @@ public class Library {
         }
     }
 
+    public boolean addRequest(LibraryCard card, Item item) {
+        if (item.isCheckedOut()) // might not need this
+            return false;
+
+        // Check if there is already a request for the item. Only 1 outstanding request allowed per item
+        for (ItemRequest request: itemRequestList)
+            if (request.item == item)
+                return false;
+
+        ItemRequest request = new ItemRequest(card, item);
+        itemRequestList.add(request);
+        return true;
+    }
+
+    public void removeRequest(ItemRequest request) {
+        itemRequestList.remove(request);
+    }
+
+    // Called when an item is returned. If the item has an outstanding request,
+    // then item is automatically checked out to the requesting user. - maybe rename/move method
+    public void checkRequests(Item returnedItem) {
+        for (ItemRequest request: itemRequestList)
+            if(request.item == returnedItem) {
+                if (returnedItem.getItemType() == Item.ItemType.BOOK)
+                    request.card.checkOutBook((Book)returnedItem);
+                else
+                    request.card.checkOutAV((AudioVideoMaterial)returnedItem);
+                return;
+            }
+    }
 }
