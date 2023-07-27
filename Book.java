@@ -15,5 +15,15 @@ public class Book extends Item {
         this.author = author;
     }
 
+    @Override
+    public String toString() {
+        return "Book{" +
+               "title='" + getTitle() + '\'' + // Use the getter method for the title
+               ", author='" + author + '\'' +
+               ", publicationYear=" + getPublicationYear() + // Use the getter method for the publication year
+               ", itemType=" + getItemType() +
+               ", checkedOut=" + isCheckedOut() +
+               '}';
+    }
     // ... (rest of the code specific to books)
 }

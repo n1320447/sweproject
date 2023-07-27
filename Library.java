@@ -6,11 +6,32 @@ public class Library {
     Scanner scanner;
     int userCount = 0;
     int itemCount = 0;
-    List<User> users;
+    List<User> users = new ArrayList<>();
+    List<Staff> staff = new ArrayList<>();
+    List<Book> books = new ArrayList<>();
+    List<AudioVideoMaterial> avMaterials;
     Library(){
         scanner = new Scanner(System.in);
-        users = new ArrayList<>(); // Initialize the users list
         System.out.println("new library made");
+
+        //create 2 users as soon as library object is created.
+        User newUser = new User("nestor1", "password1", "nestor@gmail.com", "Nestor", "Govea");
+        users.add(newUser);
+        User newUser2 = new User("mike2", "mpassword", "mike@gmail.com", "Mike", "Smith");
+        users.add(newUser2);
+        
+        // increment userCount by 2
+        userCount += 2;
+
+        //add in list of books
+            // Create and add books
+        Book book1 = new Book("Book Title 1", "Author 1", 2000);
+        books.add(book1);
+        
+        Book book2 = new Book("Book Title 2", "Author 2", 2010);
+        books.add(book2);
+
+        //add in list of AV Materials
     }
 
     public void libaryMenu(){
@@ -29,7 +50,7 @@ public class Library {
         choice = getUserChoice();
 
 
-        System.out.print("You selected option: " + choice);
+        System.out.println("You selected option: " + choice);
 
         
         switch (choice) {
@@ -67,7 +88,6 @@ public class Library {
         
                         User newUser = new User(userName, passWord, email, firstName, lastName);
                         users.add(newUser); // Add the new user to the users list
-                        System.out.println("users include: " + users);
                         // Add any additional logic for User account creation
                         break;
                     case 2:
@@ -80,6 +100,7 @@ public class Library {
                         String department = scanner.nextLine();
         
                         Staff newStaff = new Staff(userName, passWord, email, staffId, department);
+                        staff.add(newStaff);
                         // Add any additional logic for Staff account creation
                         break;
                     default:
@@ -89,7 +110,7 @@ public class Library {
                 }
 
                 userCount += 1;
-                Account newAccount = new Account(userName, passWord, email);
+                // Account newAccount = new Account(userName, passWord, email);
                 break;
             case 2:
 
@@ -97,6 +118,11 @@ public class Library {
             case 3:
                 System.out.println(" User count is: " + getNumberOfUsers());
                 System.out.println();
+                System.out.println(users);
+                break;
+            case 4:
+                System.out.println(books);
+
                 break;
             case 5:
                 System.out.println(" Add Item.");
@@ -114,7 +140,6 @@ public class Library {
                 System.out.println("2. Audio/Video");
 
                 scanner = new Scanner(System.in);
-                String type = "";
                 if(scanner.nextInt() == 1){
                     Item newItem = new Item(lastName, choice, Item.ItemType.BOOK);
                     System.out.println("New Book item created");
