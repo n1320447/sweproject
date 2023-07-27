@@ -5,6 +5,7 @@ public class LibraryCard {
     private User user;
     private List<Book> checkedOutBooks;
     private List<AudioVideoMaterial> checkedOutAV;
+    private List<Magazines> checkedOutMagazines = new ArrayList<>();
 
     public LibraryCard(User user) {
         this.user = user;
@@ -24,9 +25,6 @@ public class LibraryCard {
     // Add a method to check out a book for the user associated with this card
     public void checkOutBook(Book book) {
         checkedOutBooks.add(book);
-        // user.getCheckedOutBooks().add(book);
-        book.setCheckedOut(true);
-        System.out.println("Book '" + book.getTitle() + "' checked out successfully!");
     }
 
     // Add a method to return a book for the user associated with this card
@@ -43,6 +41,15 @@ public class LibraryCard {
     public void returnAV(AudioVideoMaterial avmaterial) {
         checkedOutAV.remove(avmaterial);
     }
+
+    public void checkOutMagazine(Magazines magazine) {
+        checkedOutMagazines.add(magazine);
+    }
+
+    public void returnMagazine(Magazines magazine) {
+        checkedOutMagazines.remove(magazine);
+    }
+
 
     // Add any other methods specific to the LibraryCard class
 }

@@ -1,13 +1,15 @@
 public class Item {
     private String title;
     private String author;
+    private String editor;
     private int publicationYear;
     private boolean checkedOut;
     private ItemType itemType;
 
     public enum ItemType {
         BOOK,
-        AUDIO_VIDEO_MATERIAL
+        AUDIO_VIDEO_MATERIAL,
+        MAGAZINE
     }
 
     public Item(String title, int publicationYear, ItemType itemType) {
@@ -33,6 +35,14 @@ public class Item {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public String getEditor(){
+        return editor;
+    }
+
+    public void setEditor(){
+        this.editor = editor;
     }
 
     public int getPublicationYear() {
