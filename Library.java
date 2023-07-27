@@ -113,7 +113,20 @@ public class Library {
                 // Account newAccount = new Account(userName, passWord, email);
                 break;
             case 2:
-
+                // System.out.println(books);
+                Boolean atLeast1CheckedOut = false;
+                for (int i = 0; i < books.size(); i++) {
+                    
+                    // System.out.println((i + 1) + ". " + users.get(i).getFirstName());
+                    if(books.get(i).isCheckedOut() == true){
+                        System.out.println(books.get(i).getTitle());
+                        atLeast1CheckedOut = true;
+                    }
+        
+                }
+                if (!atLeast1CheckedOut){
+                    System.out.println("no books are checked out currently.");
+                }
                 break;
             case 3:
                 System.out.println(" User count is: " + getNumberOfUsers());
@@ -121,7 +134,17 @@ public class Library {
                 System.out.println(users);
                 break;
             case 4:
-                System.out.println(books);
+                // System.out.println(books);
+                System.out.println("Please select a User to check out a book for.");
+                User selectedUser = selectUser();
+                Book selectedBook = selectBook();
+                // System.out.println(book);
+                // System.out.println(selectedUser);
+                
+                System.out.println(selectedUser.getLibraryCard());
+                if (selectedUser != null){
+                    selectedUser.getLibraryCard().checkOutBook(selectedBook);
+                }
 
                 break;
             case 5:
@@ -171,6 +194,67 @@ public class Library {
 
     public int getNumberOfUsers(){
         return userCount;
+    }
+
+    public User selectUser(){
+        int selectedIndex = getUserIndex();
+
+        if (selectedIndex >= 0 && selectedIndex < users.size()){
+            return users.get(selectedIndex-1);
+        } else {
+            System.out.println("Invalid user selection.");
+            return null;
+        }
+    }
+
+    public int getUserIndex(){
+        System.out.println("Available Users:");
+        for (int i = 0; i < books.size(); i++) {
+            System.out.println((i + 1) + ". " + users.get(i).getFirstName());
+
+        }
+        Scanner scanner = new Scanner(System.in);
+        int selectedIndex = scanner.nextInt();
+        scanner.nextLine(); // Consume the newline character
+
+        return selectedIndex;
+        
+    }
+
+    // Method to allow user to select a specific book from the library
+    public Book selectBook() {
+        // Display a list of available books to the user and prompt for selection
+        // For example, you can use the libaryMenu() method to display a list of books and get user input.
+        // In this example, we'll assume that the user selects a book by its index in the books list.
+        int selectedIndex = getUserBookSelection(); // You need to implement this method to get the user's book selection.
+
+        // Retrieve the selected book from the books list
+        if (selectedIndex >= 0 && selectedIndex < books.size()) {
+            return books.get(selectedIndex-1);
+        } else {
+            System.out.println("Invalid book selection.");
+            return null;
+        }
+    }
+
+        // Method to allow the user to select a book by its index
+    private int getUserBookSelection() {
+        System.out.println("Select a book by its index:");
+        displayAvailableBooks(); // Display a list of available books (you need to implement this method)
+        
+        Scanner scanner = new Scanner(System.in);
+        int selectedIndex = scanner.nextInt();
+        scanner.nextLine(); // Consume the newline character
+
+        return selectedIndex;
+    }
+
+            // Method to display a list of available books to the user
+    private void displayAvailableBooks() {
+        System.out.println("Available Books:");
+        for (int i = 0; i < books.size(); i++) {
+            System.out.println((i + 1) + ". " + books.get(i).getTitle());
+        }
     }
 
 }

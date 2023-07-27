@@ -4,7 +4,7 @@ import java.util.List;
 public class User extends Account {
     private String firstName;
     private String lastName;
-    // private List<Book> checkedOutBooks;
+    private List<Book> checkedOutBooks;
     // private List<AudioVideoMaterial> checkedOutAV;
     private LibraryCard libraryCard;
 
@@ -12,8 +12,10 @@ public class User extends Account {
         super(username, password, email);
         this.firstName = firstName;
         this.lastName = lastName;
+        this.libraryCard = new LibraryCard(this);
         // checkedOutBooks = new ArrayList<>();
         // checkedOutAV = new ArrayList<>();
+        
     }
 
     // Getters and setters for the attributes specific to User
@@ -33,9 +35,13 @@ public class User extends Account {
         this.lastName = lastName;
     }
 
-    // public List<Book> getCheckedOutBooks() {
-    //     return checkedOutBooks;
-    // }
+    public List<Book> getCheckedOutBooks() {
+        return checkedOutBooks;
+    }
+
+    public LibraryCard getLibraryCard(){
+        return libraryCard;
+    }
 
     // public void setCheckedOutBooks(List<Book> checkedOutBooks) {
     //     this.checkedOutBooks = checkedOutBooks;
