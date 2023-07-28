@@ -5,11 +5,15 @@ public class LibraryCard {
     private User user;
     private List<Book> checkedOutBooks;
     private List<AudioVideoMaterial> checkedOutAV;
+    private double fines;
+    private Library library;
 
-    public LibraryCard(User user) {
+    public LibraryCard(User user, Library library) {
         this.user = user;
         checkedOutBooks = new ArrayList<>();
         checkedOutAV = new ArrayList<>();
+        fines = 0;
+        this.library = library;
     }
 
     // Getters and setters for the user attribute (optional, if needed)
@@ -35,6 +39,8 @@ public class LibraryCard {
     // Add a method to return a book for the user associated with this card
     public void returnBook(Book book) {
         checkedOutBooks.remove(book);
+        //library.checkRequests(book);
+        fines += library.turnBookIn(book);
     }
 
     // Add a method to check out an audio/video material for the user associated with this card
