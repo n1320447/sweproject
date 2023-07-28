@@ -4,6 +4,7 @@ public class Item {
     private String editor;
     private int publicationYear;
     private boolean checkedOut;
+    private int dateCheckedOut;
     private ItemType itemType;
 
     public enum ItemType {
@@ -67,6 +68,15 @@ public class Item {
 
     public void setItemType(ItemType itemType) {
         this.itemType = itemType;
+    }
+
+    // Getter and setter for dateCheckedOut
+    public int getDateCheckedOut() {
+        return dateCheckedOut;
+    }
+
+    public void setDateCheckedOut(int date) {
+        dateCheckedOut = date;
     }
 
     // Add any other common methods here

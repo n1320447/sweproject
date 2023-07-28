@@ -7,12 +7,15 @@ public class User extends Account {
     private List<Book> checkedOutBooks;
     // private List<AudioVideoMaterial> checkedOutAV;
     private LibraryCard libraryCard;
+    private Library library;
 
-    public User(String username, String password, String email, String firstName, String lastName) {
+    public User(String username, String password, String email, String firstName, String lastName, Library library) {
         super(username, password, email);
         this.firstName = firstName;
         this.lastName = lastName;
-        this.libraryCard = new LibraryCard(this);
+        this.libraryCard = new LibraryCard(this, library);
+
+        this.library = library;
         // checkedOutBooks = new ArrayList<>();
         // checkedOutAV = new ArrayList<>();
         
