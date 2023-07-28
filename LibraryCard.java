@@ -7,6 +7,7 @@ public class LibraryCard {
     private List<AudioVideoMaterial> checkedOutAV;
     private double fines;
     private Library library;
+    private List<Magazines> checkedOutMagazines = new ArrayList<>();
 
     public LibraryCard(User user, Library library) {
         this.user = user;
@@ -55,6 +56,15 @@ public class LibraryCard {
     public void returnAV(AudioVideoMaterial avmaterial) {
         checkedOutAV.remove(avmaterial);
     }
+
+    public void checkOutMagazine(Magazines magazine) {
+        checkedOutMagazines.add(magazine);
+    }
+
+    public void returnMagazine(Magazines magazine) {
+        checkedOutMagazines.remove(magazine);
+    }
+
 
     // Add any other methods specific to the LibraryCard class
 }

@@ -10,9 +10,11 @@ public class Library {
     List<User> users = new ArrayList<>();
     List<Staff> staff = new ArrayList<>();
     List<Book> books = new ArrayList<>();
+
     List<AudioVideoMaterial> avMaterials = new ArrayList<>();
     List<ItemRequest> itemRequestList = new ArrayList<>();
-
+    List<Magazines> magazines = new ArrayList<>();
+// Add methods to handle magazines as needed.
     Library(){
         scanner = new Scanner(System.in);
         System.out.println("new library made");
@@ -51,6 +53,7 @@ public class Library {
         System.out.println("3. Get number of Accounts in System.");
         System.out.println("4. Checkout an Item");
         System.out.println("5. Add item to library (book or audio/visual)");
+        System.out.println("6. Add Magazine to library");
         System.out.println("9. Exit");
         
         choice = getUserChoice();
@@ -123,7 +126,6 @@ public class Library {
                 Boolean atLeast1CheckedOut = false;
                 for (int i = 0; i < books.size(); i++) {
                     
-                    // System.out.println((i + 1) + ". " + users.get(i).getFirstName());
                     if(books.get(i).isCheckedOut() == true){
                         System.out.println(books.get(i).getTitle());
                         atLeast1CheckedOut = true;
@@ -141,17 +143,17 @@ public class Library {
                 break;
             case 4:
                 // System.out.println(books);
+                // System.out.println(books);
                 System.out.println("Please select a User to check out a book for.");
                 User selectedUser = selectUser();
                 Book selectedBook = selectBook();
                 // System.out.println(book);
                 // System.out.println(selectedUser);
-                
+
                 System.out.println(selectedUser.getLibraryCard());
                 if (selectedUser != null){
                     selectedUser.getLibraryCard().checkOutBook(selectedBook, getDay());
                 }
-
                 break;
             case 5:
                 System.out.println(" Add Item.");
@@ -207,6 +209,12 @@ public class Library {
                 }
                 itemCount += 1;
                 break;
+
+            case 6:
+                System.out.println(" Add Magazine.");
+                // ... (Add the logic for creating and adding a new magazine)
+                break;
+
             case 9:
                 System.out.println(" Exiting the library system. Goodbye!");
                 System.out.println();
@@ -252,7 +260,7 @@ public class Library {
         scanner.nextLine(); // Consume the newline character
 
         return selectedIndex;
-        
+
     }
 
     // Method to allow user to select a specific book from the library
@@ -275,7 +283,7 @@ public class Library {
     private int getUserBookSelection() {
         System.out.println("Select a book by its index:");
         displayAvailableBooks(); // Display a list of available books (you need to implement this method)
-        
+
         Scanner scanner = new Scanner(System.in);
         int selectedIndex = scanner.nextInt();
         scanner.nextLine(); // Consume the newline character
