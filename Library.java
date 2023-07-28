@@ -24,8 +24,8 @@ public class Library {
         users.add(newUser);
         User newUser2 = new User("mike2", "mpassword", "mike@gmail.com", "Mike", "Smith");
         users.add(newUser2);*/
-        addUser("nestor1", "password1", "nestor@gmail.com", "Nestor", "Govea");
-        addUser("mike2", "mpassword", "mike@gmail.com", "Mike", "Smith");
+        addUser("nestor1", "password1", "nestor@gmail.com", "Nestor", "Govea", 22);
+        addUser("mike2", "mpassword", "mike@gmail.com", "Mike", "Smith", 10);
 
 
         // increment userCount by 2
@@ -94,9 +94,12 @@ public class Library {
         
                         System.out.println("Enter last name:");
                         String lastName = scanner.nextLine();
-        
-                        User newUser = new User(userName, passWord, email, firstName, lastName, this);
-                        users.add(newUser); // Add the new user to the users list
+
+                        System.out.println("Enter age:");
+                        int age = Integer.parseInt(scanner.nextLine());
+
+                        addUser(userName, passWord, email, firstName, lastName, age);
+
                         // Add any additional logic for User account creation
                         break;
                     case 2:
@@ -325,6 +328,9 @@ public class Library {
             if(request.item == returnedItem) {
                 if (returnedItem.getItemType() == Item.ItemType.BOOK){
                     Book book = (Book) returnedItem;
+                    User user  = request.card.getUser();
+                    System.out.println(user.getFirstName() + " " + user.getLastName() + " requested book "
+                            + book.getTitle() + ", attempting to check out book");
                     request.card.checkOutBook(book, getDay());
                 }
                 else {
@@ -375,8 +381,8 @@ public class Library {
     }
 
     // Method to add user to the system. probably need this not public
-    public void addUser(String username, String pass, String email, String first, String last) {
-        User newUser = new User(username, pass, email, first, last, this);
+    public void addUser(String username, String pass, String email, String first, String last, int age) {
+        User newUser = new User(username, pass, email, first, last, age, this);
         users.add(newUser);
         userCount++;
     }
