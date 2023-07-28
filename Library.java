@@ -6,10 +6,11 @@ public class Library {
     Scanner scanner;
     int userCount = 0;
     int itemCount = 0;
+    int day = 0;
     List<User> users = new ArrayList<>();
     List<Staff> staff = new ArrayList<>();
     List<Book> books = new ArrayList<>();
-    List<AudioVideoMaterial> avMaterials;
+    List<AudioVideoMaterial> avMaterials = new ArrayList<>();
     List<ItemRequest> itemRequestList = new ArrayList<>();
     Library(){
         scanner = new Scanner(System.in);
@@ -144,7 +145,7 @@ public class Library {
                 
                 System.out.println(selectedUser.getLibraryCard());
                 if (selectedUser != null){
-                    selectedUser.getLibraryCard().checkOutBook(selectedBook);
+                    selectedUser.getLibraryCard().checkOutBook(selectedBook, getDay());
                 }
 
                 break;
@@ -152,12 +153,21 @@ public class Library {
                 System.out.println(" Add Item.");
                 System.out.println();
 
-                
+                String title = "";
                 String lastName = "";
-               
+                int year = 0;
+
+                System.out.println("please enter the title");
+                scanner = new Scanner(System.in);
+                title = scanner.nextLine();
+
                 System.out.println("please enter last name of author/director.");
                 scanner = new Scanner(System.in);
                 lastName = scanner.nextLine();
+
+                System.out.println("please enter the year the item was released");
+                scanner = new Scanner(System.in);
+                year = Integer.parseInt(scanner.nextLine());
 
                 System.out.println("Please choose if item will be a book or audio/video item.");
                 System.out.println("1. Book");
@@ -165,12 +175,16 @@ public class Library {
 
                 scanner = new Scanner(System.in);
                 if(scanner.nextInt() == 1){
-                    Item newItem = new Item(lastName, choice, Item.ItemType.BOOK);
+                    //Item newItem = new Item(lastName, choice, Item.ItemType.BOOK);
+                    Book newItem = new Book(title, lastName, year);
+                    books.add(newItem);
                     System.out.println("New Book item created");
 
                 } else {
-                    Item newItem = new Item(lastName, choice, Item.ItemType.AUDIO_VIDEO_MATERIAL);
-                    System.out.println("New Audio/Video item created");
+                    //Item newItem = new Item(lastName, choice, Item.ItemType.AUDIO_VIDEO_MATERIAL);
+                    AudioVideoMaterial newItem = new AudioVideoMaterial(title, lastName, year);
+                    avMaterials.add(newItem);
+                    System.out.println("New AV item created");
                 }
                 itemCount += 1;
                 break;
@@ -272,20 +286,34 @@ public class Library {
         return true;
     }
 
+    // Method to remove a request from the item request list
     public void removeRequest(ItemRequest request) {
         itemRequestList.remove(request);
     }
 
-    // Called when an item is returned. If the item has an outstanding request,
+    // Method is called when an item is returned. If the item has an outstanding request,
     // then item is automatically checked out to the requesting user. - maybe rename/move method
     public void checkRequests(Item returnedItem) {
         for (ItemRequest request: itemRequestList)
             if(request.item == returnedItem) {
-                if (returnedItem.getItemType() == Item.ItemType.BOOK)
-                    request.card.checkOutBook((Book)returnedItem);
-                else
-                    request.card.checkOutAV((AudioVideoMaterial)returnedItem);
+                if (returnedItem.getItemType() == Item.ItemType.BOOK){
+                    Book book = (Book) returnedItem;
+                    request.card.checkOutBook(book, getDay());
+                }
+                else {
+                    AudioVideoMaterial av = (AudioVideoMaterial) returnedItem;
+                    request.card.checkOutAV(av, getDay());
+                }
                 return;
             }
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    // Method to update the systems date
+    public void incrementDay() {
+        day++;
     }
 }

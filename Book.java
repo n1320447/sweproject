@@ -1,9 +1,11 @@
 public class Book extends Item {
     private String author;
+    private int dateCheckedOut;
 
     public Book(String title, String author, int publicationYear) {
         super(title, publicationYear, ItemType.BOOK);
         this.author = author;
+        this.dateCheckedOut = -1;
     }
 
     // Getter and setter for author
@@ -13,6 +15,15 @@ public class Book extends Item {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    // Getter and setter for dateCheckedOut
+    public int getDateCheckedOut() {
+        return dateCheckedOut;
+    }
+
+    public void setDateCheckedOut(int date) {
+        dateCheckedOut = date;
     }
 
     @Override
