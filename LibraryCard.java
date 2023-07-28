@@ -25,6 +25,9 @@ public class LibraryCard {
     // Add a method to check out a book for the user associated with this card
     public void checkOutBook(Book book) {
         checkedOutBooks.add(book);
+        // user.getCheckedOutBooks().add(book);
+        book.setCheckedOut(true);
+        System.out.println("Book '" + book.getTitle() + "' checked out successfully!");
     }
 
     // Add a method to return a book for the user associated with this card
