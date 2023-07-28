@@ -117,7 +117,19 @@ public class Library {
                 // Account newAccount = new Account(userName, passWord, email);
                 break;
             case 2:
-
+                // System.out.println(books);
+                Boolean atLeast1CheckedOut = false;
+                for (int i = 0; i < books.size(); i++) {
+                    
+                    if(books.get(i).isCheckedOut() == true){
+                        System.out.println(books.get(i).getTitle());
+                        atLeast1CheckedOut = true;
+                    }
+        
+                }
+                if (!atLeast1CheckedOut){
+                    System.out.println("no books are checked out currently.");
+                }
                 break;
             case 3:
                 System.out.println(" User count is: " + getNumberOfUsers());
