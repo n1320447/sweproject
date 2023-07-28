@@ -5,7 +5,8 @@ public class User extends Account {
     private String firstName;
     private String lastName;
     private List<Book> checkedOutBooks;
-    // private List<AudioVideoMaterial> checkedOutAV;
+    private List<Magazines> checkedOutMagazines;
+     private List<AudioVideoMaterial> checkedOutAV;
     private LibraryCard libraryCard;
     private Library library;
 
@@ -41,6 +42,9 @@ public class User extends Account {
     public List<Book> getCheckedOutBooks() {
         return checkedOutBooks;
     }
+
+    public List<Magazines> getCheckedOutMagazines(){ return checkedOutMagazines;}
+    public List<AudioVideoMaterial> getCheckedOutAV(){ return checkedOutAV;}
 
     public LibraryCard getLibraryCard(){
         return libraryCard;
