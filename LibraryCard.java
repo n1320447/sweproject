@@ -45,13 +45,17 @@ public class LibraryCard {
         //checkedOutAV.add(avmaterial);
     //}
     public void checkOutBook(Book book, int date) {
-        checkedOutBooks.add(book);
-        // user.getCheckedOutBooks().add(book);
-        book.setCheckedOut(true);
+        if (!user.getIsChild() || (user.getIsChild() && checkedOutBooks.size() <= 5)) {
+            checkedOutBooks.add(book);
+            // user.getCheckedOutBooks().add(book);
+            book.setCheckedOut(true);
 
-        book.setDateCheckedOut(date);
+            book.setDateCheckedOut(date);
 
-        System.out.println("Book '" + book.getTitle() + "' checked out successfully!");
+            System.out.println("Book '" + book.getTitle() + "' checked out successfully!");
+        } else {
+            System.out.println("Unable to check book out: maximum items check out reached");
+        }
     }
 
     // Add a method to return a book for the user associated with this card

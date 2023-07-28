@@ -9,14 +9,19 @@ public class User extends Account {
      private List<AudioVideoMaterial> checkedOutAV;
     private LibraryCard libraryCard;
     private Library library;
+    private boolean isChild;
 
-    public User(String username, String password, String email, String firstName, String lastName, Library library) {
+    public User(String username, String password, String email, String firstName, String lastName, int age,Library library) {
         super(username, password, email);
         this.firstName = firstName;
         this.lastName = lastName;
         this.libraryCard = new LibraryCard(this, library);
-
+        if (age > 12)
+            isChild = false;
+        else
+            isChild = true;
         this.library = library;
+
         // checkedOutBooks = new ArrayList<>();
         // checkedOutAV = new ArrayList<>();
         
@@ -48,6 +53,10 @@ public class User extends Account {
 
     public LibraryCard getLibraryCard(){
         return libraryCard;
+    }
+
+    public boolean getIsChild() {
+        return isChild;
     }
 
     // public void setCheckedOutBooks(List<Book> checkedOutBooks) {
