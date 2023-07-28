@@ -55,11 +55,11 @@ public class LibraryCard {
     }
 
     // Add a method to return a book for the user associated with this card
-    public void returnBook(Book book) {
-        checkedOutBooks.remove(book);
+    //public void returnBook(Book book) {
+        //checkedOutBooks.remove(book);
         //library.checkRequests(book);
-        fines += library.turnBookIn(book);
-    }
+        //fines += library.turnBookIn(book);
+    //}
 
     // Add a method to check out an audio/video material for the user associated with this card
     public void checkOutAV(AudioVideoMaterial avmaterial, int date) {
@@ -94,6 +94,7 @@ public class LibraryCard {
     }
 
     public void returnBook(Book book){
+        fines += library.turnBookIn(book);
         Return.returnBook(book, this);
     }
 
