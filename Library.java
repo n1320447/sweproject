@@ -6,38 +6,43 @@ public class Library {
     Scanner scanner;
     int userCount = 0;
     int itemCount = 0;
+    int day = 0;
     List<User> users = new ArrayList<>();
     List<Staff> staff = new ArrayList<>();
     List<Book> books = new ArrayList<>();
-    List<AudioVideoMaterial> avMaterials;
+
+    List<AudioVideoMaterial> avMaterials = new ArrayList<>();
+    List<ItemRequest> itemRequestList = new ArrayList<>();
     List<Magazines> magazines = new ArrayList<>();
 // Add methods to handle magazines as needed.
-
     Library(){
         scanner = new Scanner(System.in);
         System.out.println("new library made");
 
         //create 2 users as soon as library object is created.
-        User newUser = new User("nestor1", "password1", "nestor@gmail.com", "Nestor", "Govea");
+        /*User newUser = new User("nestor1", "password1", "nestor@gmail.com", "Nestor", "Govea");
         users.add(newUser);
         User newUser2 = new User("mike2", "mpassword", "mike@gmail.com", "Mike", "Smith");
-        users.add(newUser2);
-        
+        users.add(newUser2);*/
+        addUser("nestor1", "password1", "nestor@gmail.com", "Nestor", "Govea");
+        addUser("mike2", "mpassword", "mike@gmail.com", "Mike", "Smith");
+
+
         // increment userCount by 2
-        userCount += 2;
+        //userCount += 2;
 
         //add in list of books
             // Create and add books
-        Book book1 = new Book("Book Title 1", "Author 1", 2000);
+        Book book1 = new Book("Book Title 1", "Author 1", 2000, false, 5);
         books.add(book1);
         
-        Book book2 = new Book("Book Title 2", "Author 2", 2010);
+        Book book2 = new Book("Book Title 2", "Author 2", 2010, false, 3.2);
         books.add(book2);
 
         //add in list of AV Materials
     }
 
-    public void libaryMenu(){
+    public void libraryMenu(){
         int choice = 0;
         
 
@@ -90,7 +95,7 @@ public class Library {
                         System.out.println("Enter last name:");
                         String lastName = scanner.nextLine();
         
-                        User newUser = new User(userName, passWord, email, firstName, lastName);
+                        User newUser = new User(userName, passWord, email, firstName, lastName, this);
                         users.add(newUser); // Add the new user to the users list
                         // Add any additional logic for User account creation
                         break;
@@ -147,19 +152,34 @@ public class Library {
 
                 System.out.println(selectedUser.getLibraryCard());
                 if (selectedUser != null){
-                    selectedUser.getLibraryCard().checkOutBook(selectedBook);
+                    selectedUser.getLibraryCard().checkOutBook(selectedBook, getDay());
                 }
                 break;
             case 5:
                 System.out.println(" Add Item.");
                 System.out.println();
 
-                
+                String title = "";
                 String lastName = "";
-               
+                int year = 0;
+                String bestseller = "";
+                double value = 0;
+
+                System.out.println("please enter the title.");
+                scanner = new Scanner(System.in);
+                title = scanner.nextLine();
+
                 System.out.println("please enter last name of author/director.");
                 scanner = new Scanner(System.in);
                 lastName = scanner.nextLine();
+
+                System.out.println("please enter the year the item was released.");
+                scanner = new Scanner(System.in);
+                year = Integer.parseInt(scanner.nextLine());
+
+                System.out.println("please enter the value of the item.");
+                scanner = new Scanner(System.in);
+                value = Double.parseDouble(scanner.nextLine());
 
                 System.out.println("Please choose if item will be a book or audio/video item.");
                 System.out.println("1. Book");
@@ -167,12 +187,25 @@ public class Library {
 
                 scanner = new Scanner(System.in);
                 if(scanner.nextInt() == 1){
-                    Item newItem = new Item(lastName, choice, Item.ItemType.BOOK);
+                    //Item newItem = new Item(lastName, choice, Item.ItemType.BOOK);
+                    System.out.println("Is this book a bestseller? (y/n)");
+                    scanner = new Scanner(System.in);
+                    bestseller = scanner.nextLine();
+
+                    Book newItem;
+                    if(bestseller.contains("y") || bestseller.contains("Y"))
+                        newItem = new Book(title, lastName, year, true, value);
+                    else
+                        newItem = new Book(title, lastName, year, false, value);
+                    books.add(newItem);
+
                     System.out.println("New Book item created");
 
                 } else {
-                    Item newItem = new Item(lastName, choice, Item.ItemType.AUDIO_VIDEO_MATERIAL);
-                    System.out.println("New Audio/Video item created");
+                    //Item newItem = new Item(lastName, choice, Item.ItemType.AUDIO_VIDEO_MATERIAL);
+                    AudioVideoMaterial newItem = new AudioVideoMaterial(title, lastName, year);
+                    avMaterials.add(newItem);
+                    System.out.println("New AV item created");
                 }
                 itemCount += 1;
                 break;
@@ -266,4 +299,91 @@ public class Library {
         }
     }
 
+    public boolean addRequest(LibraryCard card, Item item) {
+        if (item.isCheckedOut()) // might not need this
+            return false;
+
+        // Check if there is already a request for the item. Only 1 outstanding request allowed per item
+        for (ItemRequest request: itemRequestList)
+            if (request.item == item)
+                return false;
+
+        ItemRequest request = new ItemRequest(card, item);
+        itemRequestList.add(request);
+        return true;
+    }
+
+    // Method to remove a request from the item request list
+    public void removeRequest(ItemRequest request) {
+        itemRequestList.remove(request);
+    }
+
+    // Method is called when an item is returned. If the item has an outstanding request,
+    // then item is automatically checked out to the requesting user. - maybe rename/move method
+    private boolean checkRequests(Item returnedItem) {
+        for (ItemRequest request: itemRequestList)
+            if(request.item == returnedItem) {
+                if (returnedItem.getItemType() == Item.ItemType.BOOK){
+                    Book book = (Book) returnedItem;
+                    request.card.checkOutBook(book, getDay());
+                }
+                else {
+                    AudioVideoMaterial av = (AudioVideoMaterial) returnedItem;
+                    request.card.checkOutAV(av, getDay());
+                }
+                removeRequest(request);
+                return true;
+            }
+        return false;
+    }
+
+    // Method to turn book in. This returns the fine that the user must pay if the book was overdue
+    public double turnBookIn(Book book) {
+        double fine = 0;
+        boolean reloaned = false;
+        int daysLoaned = getDay() - book.getDateCheckedOut();
+        int overdueDays = 0;
+
+        // Calculate the flat amount due
+        if (book.getBestseller() && daysLoaned > 14) {
+            fine = (double) (daysLoaned - 14) * 0.1;
+        } else if (daysLoaned > 21) {
+            fine = (double) (daysLoaned - 21) * 0.1;
+        }
+
+        // Check if flat fine is too high for book value
+        if (book.getValue() < fine)
+            fine = book.getValue();
+
+        // Check if there is request out for book
+        reloaned = checkRequests((Item)book);
+        if (!reloaned) {
+            book.setCheckedOut(false);
+            book.setDateCheckedOut(-1);
+        }
+
+        return fine;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    // Method to update the systems date
+    private void incrementDay() {
+        day++;
+    }
+
+    // Method to add user to the system. probably need this not public
+    public void addUser(String username, String pass, String email, String first, String last) {
+        User newUser = new User(username, pass, email, first, last, this);
+        users.add(newUser);
+        userCount++;
+    }
+
+    // Method to add staff member to the system, probably need this not public
+    public void addStaff(String username, String password, String email, String staffId, String department) {
+        Staff newStaff = new Staff(username, password, email, staffId, department);
+
+    }
 }
