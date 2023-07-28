@@ -117,7 +117,6 @@ public class Library {
                 Boolean atLeast1CheckedOut = false;
                 for (int i = 0; i < books.size(); i++) {
                     
-                    // System.out.println((i + 1) + ". " + users.get(i).getFirstName());
                     if(books.get(i).isCheckedOut() == true){
                         System.out.println(books.get(i).getTitle());
                         atLeast1CheckedOut = true;
