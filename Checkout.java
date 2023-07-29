@@ -38,4 +38,8 @@ public class Checkout {
             System.out.println("AV material: " + avMaterial.getTitle() + " is already checked out.");
         }
     }
+
+    public static boolean anyItemCheckedOut(){
+        return checkedOutAV.isEmpty() || checkedOutBooks.isEmpty() || checkedOutMagazines.isEmpty();
+    }
 }

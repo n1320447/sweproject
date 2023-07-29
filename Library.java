@@ -128,17 +128,41 @@ public class Library {
             case 2:
                 // System.out.println(books);
                 Boolean atLeast1CheckedOut = false;
-                for (int i = 0; i < books.size(); i++) {
+                System.out.println("Is a staff or user requesting checked out books?");
+                System.out.println("1. Staff");
+                System.out.println("2. User");
+                int choice2 = getUserChoice();
+                
+                switch(choice2){
+                    case 1:
+                        //staff
+                        System.out.println("enter staff code:");
+                        int code = getUserChoice();
+                        //check code for a match somewhere
+                        for (int i = 0; i < books.size(); i++) {
                     
-                    if(books.get(i).isCheckedOut() == true){
-                        System.out.println(books.get(i).getTitle());
-                        atLeast1CheckedOut = true;
-                    }
-        
+                            if(books.get(i).isCheckedOut() == true){
+                                // System.out.println(books.get(i).getTitle());
+                                System.out.println(users.get(i));
+                                users.get(i).getLibraryCard().displayCheckedout();
+                                System.out.println("");
+                                atLeast1CheckedOut = true;
+                            }
+                
+                        }
+                    break;
+
+                    case 2:
+                    //user
+                        User userChoice = selectUser();
+                        userChoice.getLibraryCard().displayCheckedout();
+                    break;
                 }
+     
                 if (!atLeast1CheckedOut){
                     System.out.println("no books are checked out currently.");
                 }
+                
                 break;
             case 3:
                 System.out.println(" User count is: " + getNumberOfUsers());
@@ -374,6 +398,7 @@ public class Library {
         // Check if there is request out for book
         reloaned = checkRequests((Item)book);
         if (!reloaned) {
+            System.out.println("inside checking requests");
             book.setCheckedOut(false);
             book.setDateCheckedOut(-1);
         }

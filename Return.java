@@ -6,6 +6,7 @@ public class Return {
     private static List<Magazines> checkedOutMagazines = new ArrayList<>();
     private static List<AudioVideoMaterial> checkedOutAV = new ArrayList<>();
     public static void returnBook(Book book, LibraryCard libraryCard){
+        System.out.println("outside returnbook if, checkedOutBooks contains:" + checkedOutBooks);
         if(checkedOutBooks.contains(book)){
             checkedOutBooks.remove(book);
             book.setCheckedOut(false);
