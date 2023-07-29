@@ -29,7 +29,7 @@ public class Library {
 
 
         // increment userCount by 2
-        //userCount += 2;
+        userCount += 2;
 
         //add in list of books
             // Create and add books
@@ -244,7 +244,7 @@ public class Library {
     public User selectUser(){
         int selectedIndex = getUserIndex();
 
-        if (selectedIndex >= 0 && selectedIndex < users.size()){
+        if (selectedIndex >= 0 && selectedIndex <= users.size()){
             return users.get(selectedIndex-1);
         } else {
             System.out.println("Invalid user selection.");
@@ -274,7 +274,7 @@ public class Library {
         int selectedIndex = getUserBookSelection(); // You need to implement this method to get the user's book selection.
 
         // Retrieve the selected book from the books list
-        if (selectedIndex >= 0 && selectedIndex < books.size()) {
+        if (selectedIndex >= 0 && selectedIndex <= books.size()) {
             return books.get(selectedIndex-1);
         } else {
             System.out.println("Invalid book selection.");
