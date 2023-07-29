@@ -29,7 +29,7 @@ public class Library {
 
 
         // increment userCount by 2
-        userCount += 2;
+        // userCount += 2;
 
         //add in list of books
             // Create and add books
@@ -54,6 +54,7 @@ public class Library {
         System.out.println("4. Checkout an Item");
         System.out.println("5. Add item to library (book or audio/visual)");
         System.out.println("6. Add Magazine to library");
+        System.out.println("7. Return book");
         System.out.println("9. Exit");
         
         choice = getUserChoice();
@@ -217,7 +218,16 @@ public class Library {
                 System.out.println(" Add Magazine.");
                 // ... (Add the logic for creating and adding a new magazine)
                 break;
+            case 7:
+                System.out.println("Please select a User to return a book for.");
+                User selectedUser2 = selectUser();
+                Book selectedBook2 = selectBook();
 
+                System.out.println(selectedUser2.getLibraryCard());
+                if (selectedUser2 != null){
+                    selectedUser2.getLibraryCard().returnBook(selectedBook2);
+                }
+                break;
             case 9:
                 System.out.println(" Exiting the library system. Goodbye!");
                 System.out.println();
@@ -298,7 +308,7 @@ public class Library {
     private void displayAvailableBooks() {
         System.out.println("Available Books:");
         for (int i = 0; i < books.size(); i++) {
-            System.out.println((i + 1) + ". " + books.get(i).getTitle());
+            System.out.println((i + 1) + ". " + books.get(i).getTitle() + ", is checked out?: " + books.get(i).isCheckedOut());
         }
     }
 
