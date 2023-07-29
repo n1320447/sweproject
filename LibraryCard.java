@@ -110,5 +110,18 @@ public class LibraryCard {
         Return.returnAV(avMaterial, this);
     }
 
+    public void displayCheckedout(){
+        for (int i = 0; i < checkedOutAV.size(); i++){
+            System.out.println(checkedOutAV);
+        }
+        for (int i = 0; i < checkedOutBooks.size(); i++){
+            System.out.println(checkedOutBooks);
+        }
+        for (int i = 0; i < checkedOutMagazines.size(); i++){
+            System.out.println(checkedOutMagazines);
+        }
+
+    }
+
     // Add any other methods specific to the LibraryCard class
 }
