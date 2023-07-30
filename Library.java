@@ -232,7 +232,7 @@ public class Library {
                 int checkoutType = scanner.nextInt();
                 scanner.nextLine();
 
-                switch(checkoutType){
+                switch(checkoutType) {
                     case 1:
                         // System.out.println(books);
                         // System.out.println(books);
@@ -244,11 +244,11 @@ public class Library {
                         System.out.println("2. AV material");
                         System.out.println(" ");
                         int itemType = getUserChoice();
-                        switch(itemType){
+                        switch (itemType) {
                             case 1:
                                 Book selectedBook = selectBook();
                                 System.out.println(selectedUser.getLibraryCard());
-                                if (selectedUser != null){
+                                if (selectedUser != null) {
                                     selectedUser.getLibraryCard().checkOutBook(selectedBook, getDay());
                                 }
                                 break;
@@ -256,21 +256,24 @@ public class Library {
                             case 2:
                                 AudioVideoMaterial selectedAV = selectAV();
                                 System.out.println(selectedUser.getLibraryCard());
-                                if (selectedUser != null){
+                                if (selectedUser != null) {
                                     selectedUser.getLibraryCard().checkOutAV(selectedAV, getDay());
                                 }
                                 break;
                         }
+                        break;
                     case 2:
                         System.out.println("Please select a User to renew a book for.");
                         User userChoice = selectUser();
                         Book bookChoice = selectBook();
 
                         System.out.println(userChoice.getLibraryCard());
-                        if (userChoice != null){
+                        if (userChoice != null) {
                             userChoice.getLibraryCard().renewBook(bookChoice, getDay());
                         }
+                        break;
                 }
+                break;
                 // Book selectedBook = selectBook();
                 // System.out.println(book);
                 // System.out.println(selectedUser);
@@ -279,7 +282,6 @@ public class Library {
                 // if (selectedUser != null){
                 //     selectedUser.getLibraryCard().checkOutBook(selectedBook, getDay());
                 // }
-                break;
             case 5:
                 System.out.println(" Add Item.");
                 System.out.println();
