@@ -50,12 +50,22 @@ public class Library {
         Book book3 = new Book("The Return of the King", "J.R.R. Tolkien", 1955, false, 4.8);
         books.add(book3);
 
+        AudioVideoMaterial av1 = new AudioVideoMaterial("audio1", "magAuthor1", 1999);
+        avMaterials.add(av1);
 
+        AudioVideoMaterial av2 = new AudioVideoMaterial("audio2", "magAuthor2", 1980);
+        avMaterials.add(av2);
 
+        AudioVideoMaterial av3 = new AudioVideoMaterial("audio3", "magAuthor3", 1995);
+        avMaterials.add(av3);
 
-        
+        Magazines mg1 = new Magazines("magazine1","magAuthor1", 2000);
+        Magazines mg2 = new Magazines("magazine2", "magAuthor2", 2010);
+        Magazines mg3 = new Magazines("magazine2", "magAuthor3", 2021);
 
-        //add in list of AV Materials
+        magazines.add(mg1);
+        magazines.add(mg2);
+        magazines.add(mg3);
 
         // Set the library in needed classes
         Return.setLibrary(this);
@@ -165,29 +175,35 @@ public class Library {
                         System.out.println("enter staff code:");
                         int code = getUserChoice();
                         //check code for a match somewhere
-                        for (int i = 0; i < books.size(); i++) {
-                    
-                            if(books.get(i).isCheckedOut() == true){
-                                // System.out.println(books.get(i).getTitle());
-                                System.out.println(users.get(i));
-                                users.get(i).getLibraryCard().displayCheckedout();
-                                System.out.println("");
-                                atLeast1CheckedOut = true;
-                            }
-                
+                        for(int i = 0; i < users.size(); i++){
+                            
+                            System.out.println(users.get(i).getFirstName());
+                            users.get(i).getLibraryCard().displayCheckedout();
                         }
+                        // for (int i = 0; i < books.size(); i++) {
+                    
+                        //     if(books.get(i).isCheckedOut() == true){
+                        //         // System.out.println(books.get(i).getTitle());
+                        //         System.out.println(users.get(i));
+                        //         users.get(i).getLibraryCard().displayCheckedout();
+                        //         System.out.println("");
+                        //         atLeast1CheckedOut = true;
+                        //     }
+                
+                        // }
                     break;
 
                     case 2:
                     //user
                         User userChoice = selectUser();
+                        System.out.println(userChoice.getFirstName());
                         userChoice.getLibraryCard().displayCheckedout();
                     break;
                 }
      
-                if (!atLeast1CheckedOut){
-                    System.out.println("no books are checked out currently.");
-                }
+                // if (!atLeast1CheckedOut){
+                //     System.out.println("no books are checked out currently.");
+                // }
                 
                 break;
             case 3:
@@ -200,14 +216,38 @@ public class Library {
                 // System.out.println(books);
                 System.out.println("Please select a User to check out a book for.");
                 User selectedUser = selectUser();
-                Book selectedBook = selectBook();
+
+                System.out.println("select what type of item to checkout");
+                System.out.println("1. Book");
+                System.out.println("2. AV material");
+                System.out.println(" ");
+                int itemType = getUserChoice();
+                switch(itemType){
+                    case 1:
+                    Book selectedBook = selectBook();
+                    System.out.println(selectedUser.getLibraryCard());
+                    if (selectedUser != null){
+                        selectedUser.getLibraryCard().checkOutBook(selectedBook, getDay());
+                    }
+                    break;
+
+                    case 2:
+                    AudioVideoMaterial selectedAV = selectAV();
+                    System.out.println(selectedUser.getLibraryCard());
+                    if (selectedUser != null){
+                        selectedUser.getLibraryCard().checkOutAV(selectedAV, getDay());
+                    }
+                    break;
+                }
+                
+                // Book selectedBook = selectBook();
                 // System.out.println(book);
                 // System.out.println(selectedUser);
 
-                System.out.println(selectedUser.getLibraryCard());
-                if (selectedUser != null){
-                    selectedUser.getLibraryCard().checkOutBook(selectedBook, getDay());
-                }
+                // System.out.println(selectedUser.getLibraryCard());
+                // if (selectedUser != null){
+                //     selectedUser.getLibraryCard().checkOutBook(selectedBook, getDay());
+                // }
                 break;
             case 5:
                 System.out.println(" Add Item.");
@@ -351,18 +391,41 @@ public class Library {
         }
     }
 
+    public AudioVideoMaterial selectAV(){
+        int selectIndex = getUserAVSelection();
+        if (selectIndex >= 0 && selectIndex <= avMaterials.size()){
+            return avMaterials.get(selectIndex - 1);
+        } else {
+            System.out.println("invalid av selection.");
+            return null;
+        }
+    }
+
+    private int getUserAVSelection(){
+        System.out.println("Select a AV selection by its index:");
+        displayAvailableAV();
+
+        Scanner scanner = new Scanner(System.in);
+        int selectIndex = scanner.nextInt();
+        scanner.nextLine();
+
+        return selectIndex;
+    }
+
         // Method to allow the user to select a book by its index
     private int getUserBookSelection() {
         System.out.println("Select a book by its index:");
         displayAvailableBooks(); // Display a list of available books (you need to implement this method)
-
-        Scanner scanner = new Scanner(System.in);
-        int selectedIndex = scanner.nextInt();
-        scanner.nextLine(); // Consume the newline character
-
+        int selectedIndex = getUserChoice();
         return selectedIndex;
     }
 
+    private void displayAvailableAV(){
+        System.out.println("Available AV Material.");
+        for (int i = 0; i < avMaterials.size(); i++){
+            System.out.println((i + 1) + ". " + avMaterials.get(i).getTitle() + ", is checked out?: " + avMaterials.get(i).isCheckedOut());
+        }
+    }
             // Method to display a list of available books to the user
     private void displayAvailableBooks() {
         System.out.println("Available Books:");
