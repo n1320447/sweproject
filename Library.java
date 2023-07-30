@@ -50,13 +50,13 @@ public class Library {
         Book book3 = new Book("The Return of the King", "J.R.R. Tolkien", 1955, false, 4.8);
         books.add(book3);
 
-        AudioVideoMaterial av1 = new AudioVideoMaterial("audio1", "magAuthor1", 1999);
+        AudioVideoMaterial av1 = new AudioVideoMaterial("audio1", "magAuthor1", 1999, 15);
         avMaterials.add(av1);
 
-        AudioVideoMaterial av2 = new AudioVideoMaterial("audio2", "magAuthor2", 1980);
+        AudioVideoMaterial av2 = new AudioVideoMaterial("audio2", "magAuthor2", 1980, 7.2);
         avMaterials.add(av2);
 
-        AudioVideoMaterial av3 = new AudioVideoMaterial("audio3", "magAuthor3", 1995);
+        AudioVideoMaterial av3 = new AudioVideoMaterial("audio3", "magAuthor3", 1995, 2.5);
         avMaterials.add(av3);
 
         Magazines mg1 = new Magazines("magazine1","magAuthor1", 2000);
@@ -300,7 +300,7 @@ public class Library {
 
                 } else {
                     //Item newItem = new Item(lastName, choice, Item.ItemType.AUDIO_VIDEO_MATERIAL);
-                    AudioVideoMaterial newItem = new AudioVideoMaterial(title, lastName, year);
+                    AudioVideoMaterial newItem = new AudioVideoMaterial(title, lastName, year, value);
                     avMaterials.add(newItem);
                     System.out.println("New AV item created");
                 }
