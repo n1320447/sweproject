@@ -24,8 +24,8 @@ public class Library {
         users.add(newUser);
         User newUser2 = new User("mike2", "mpassword", "mike@gmail.com", "Mike", "Smith");
         users.add(newUser2);*/
-        addUser("nestor1", "password1", "nestor@gmail.com", "Nestor", "Govea", 22);
-        addUser("mike2", "mpassword", "mike@gmail.com", "Mike", "Smith", 10);
+        addUser("nestor1", "password1", "nestor@gmail.com", "Nestor", "Govea", 22, "1980 Bob Cat Street", "123-456-7899");
+        addUser("mike2", "mpassword", "mike@gmail.com", "Mike", "Smith", 10, "1999 The Square Avenue.", "512-343-5234");
 
 
         // increment userCount by 2
@@ -50,12 +50,22 @@ public class Library {
         Book book3 = new Book("The Return of the King", "J.R.R. Tolkien", 1955, false, 4.8);
         books.add(book3);
 
+        AudioVideoMaterial av1 = new AudioVideoMaterial("audio1", "magAuthor1", 1999, 15);
+        avMaterials.add(av1);
 
+        AudioVideoMaterial av2 = new AudioVideoMaterial("audio2", "magAuthor2", 1980, 7.2);
+        avMaterials.add(av2);
 
+        AudioVideoMaterial av3 = new AudioVideoMaterial("audio3", "magAuthor3", 1995, 2.5);
+        avMaterials.add(av3);
 
-        
+        Magazines mg1 = new Magazines("magazine1","magAuthor1", 2000);
+        Magazines mg2 = new Magazines("magazine2", "magAuthor2", 2010);
+        Magazines mg3 = new Magazines("magazine2", "magAuthor3", 2021);
 
-        //add in list of AV Materials
+        magazines.add(mg1);
+        magazines.add(mg2);
+        magazines.add(mg3);
 
         // Set the library in needed classes
         Return.setLibrary(this);
@@ -77,7 +87,7 @@ public class Library {
         System.out.println("Please choose what to do by the number.");
         System.out.println("1. Create Account");
         System.out.println("2. View which items are checked out.");
-        System.out.println("3. Get number of Accounts in System.");
+        System.out.println("3. Get number of Accounts in System and basic information.");
         System.out.println("4. Checkout an Item");
         System.out.println("5. Add item to library (book or audio/visual)");
         System.out.println("6. Add Magazine to library");
@@ -127,7 +137,13 @@ public class Library {
                         System.out.println("Enter age:");
                         int age = Integer.parseInt(scanner.nextLine());
 
-                        addUser(userName, passWord, email, firstName, lastName, age);
+                        System.out.println("Enter address");
+                        String address = scanner.nextLine();
+
+                        System.out.println("Enter Phone Number");
+                        String phoneNum = scanner.nextLine();
+
+                        addUser(userName, passWord, email, firstName, lastName, age, address, phoneNum);
 
                         // Add any additional logic for User account creation
                         break;
@@ -167,35 +183,47 @@ public class Library {
                         System.out.println("enter staff code:");
                         int code = getUserChoice();
                         //check code for a match somewhere
-                        for (int i = 0; i < books.size(); i++) {
-                    
-                            if(books.get(i).isCheckedOut() == true){
-                                // System.out.println(books.get(i).getTitle());
-                                System.out.println(users.get(i));
-                                users.get(i).getLibraryCard().displayCheckedout();
-                                System.out.println("");
-                                atLeast1CheckedOut = true;
-                            }
-                
+                        for(int i = 0; i < users.size(); i++){
+                            
+                            System.out.println(users.get(i).getFirstName());
+                            users.get(i).getLibraryCard().displayCheckedout();
                         }
+                        // for (int i = 0; i < books.size(); i++) {
+                    
+                        //     if(books.get(i).isCheckedOut() == true){
+                        //         // System.out.println(books.get(i).getTitle());
+                        //         System.out.println(users.get(i));
+                        //         users.get(i).getLibraryCard().displayCheckedout();
+                        //         System.out.println("");
+                        //         atLeast1CheckedOut = true;
+                        //     }
+                
+                        // }
+                    System.out.println(" ");
                     break;
 
                     case 2:
                     //user
                         User userChoice = selectUser();
+                        System.out.println(userChoice.getFirstName());
                         userChoice.getLibraryCard().displayCheckedout();
+                        System.out.println(" ");
                     break;
                 }
      
-                if (!atLeast1CheckedOut){
-                    System.out.println("no books are checked out currently.");
-                }
+                // if (!atLeast1CheckedOut){
+                //     System.out.println("no books are checked out currently.");
+                // }
                 
                 break;
             case 3:
                 System.out.println(" User count is: " + getNumberOfUsers());
                 System.out.println();
-                System.out.println(users);
+                // System.out.println(users);
+                for(int i = 0; i < users.size(); i++){
+                    System.out.println(i+1 + ". User Name: " + users.get(i).getFirstName() + ", Address: " + users.get(i).getAddress() +  ", Phone Number: " + users.get(i).getPhoneNum() + ", Library Card Number: " + users.get(i).getLibCardNum());
+                }
+                System.out.println(" ");
                 break;
             case 4:
                 System.out.println("Please select what type of checkout.");
@@ -210,15 +238,29 @@ public class Library {
                         // System.out.println(books);
                         System.out.println("Please select a User to check out a book for.");
                         User selectedUser = selectUser();
-                        Book selectedBook = selectBook();
-                        // System.out.println(book);
-                        // System.out.println(selectedUser);
 
-                        System.out.println(selectedUser.getLibraryCard());
-                        if (selectedUser != null){
-                            selectedUser.getLibraryCard().checkOutBook(selectedBook, getDay());
+                        System.out.println("select what type of item to checkout");
+                        System.out.println("1. Book");
+                        System.out.println("2. AV material");
+                        System.out.println(" ");
+                        int itemType = getUserChoice();
+                        switch(itemType){
+                            case 1:
+                            Book selectedBook = selectBook();
+                            System.out.println(selectedUser.getLibraryCard());
+                            if (selectedUser != null){
+                                selectedUser.getLibraryCard().checkOutBook(selectedBook, getDay());
+                            }
+                            break;
+
+                            case 2:
+                                AudioVideoMaterial selectedAV = selectAV();
+                                System.out.println(selectedUser.getLibraryCard());
+                                if (selectedUser != null){
+                                    selectedUser.getLibraryCard().checkOutAV(selectedAV, getDay());
+                                }
+                                break;
                         }
-                        break;
                     case 2:
                         System.out.println("Please select a User to renew a book for.");
                         User userChoice = selectUser();
@@ -230,6 +272,15 @@ public class Library {
                         }
                 }
 
+                
+                // Book selectedBook = selectBook();
+                // System.out.println(book);
+                // System.out.println(selectedUser);
+
+                // System.out.println(selectedUser.getLibraryCard());
+                // if (selectedUser != null){
+                //     selectedUser.getLibraryCard().checkOutBook(selectedBook, getDay());
+                // }
                 break;
             case 5:
                 System.out.println(" Add Item.");
@@ -279,7 +330,7 @@ public class Library {
 
                 } else {
                     //Item newItem = new Item(lastName, choice, Item.ItemType.AUDIO_VIDEO_MATERIAL);
-                    AudioVideoMaterial newItem = new AudioVideoMaterial(title, lastName, year);
+                    AudioVideoMaterial newItem = new AudioVideoMaterial(title, lastName, year, value);
                     avMaterials.add(newItem);
                     System.out.println("New AV item created");
                 }
@@ -291,14 +342,62 @@ public class Library {
                 // ... (Add the logic for creating and adding a new magazine)
                 break;
             case 7:
-                System.out.println("Please select a User to return a book for.");
+                System.out.println("Please select a User to return an item for.");
                 User selectedUser2 = selectUser();
-                Book selectedBook2 = selectBook();
+                //switch for av or book
+                //display respective av or book for selected user.
+                System.out.println("select what type of item to return");
+                System.out.println("1. Book");
+                System.out.println("2. AV material");
+                System.out.println(" ");
+                int itemTypeReturn = getUserChoice();
+                switch(itemTypeReturn){
+                    case 1:
+                        // Book selectedBook = selectBook();
+                        int bookListSize = selectedUser2.getLibraryCard().getCheckedOutBooks().size();
+                        if(bookListSize == 0){
+                            System.out.println("No books checkedout for this user.");
+                            break;}
+                        for(int i = 0; i < selectedUser2.getLibraryCard().getCheckedOutBooks().size(); i++){
+                            System.out.println( i+1 + ". " + selectedUser2.getLibraryCard().getCheckedOutBooks().get(i));
+                        }
+                        int returnBookIndex = getUserChoice();
+                        Book returnBook = selectedUser2.getLibraryCard().getCheckedOutBooks().get(returnBookIndex-1);
 
-                System.out.println(selectedUser2.getLibraryCard());
-                if (selectedUser2 != null){
-                    selectedUser2.getLibraryCard().returnBook(selectedBook2);
+                        if (selectedUser2 != null){
+                            selectedUser2.getLibraryCard().returnBook(returnBook);
+                        }
+                        break;
+
+                    case 2:
+    
+                        int avListSize = selectedUser2.getLibraryCard().getCheckedOutAV().size();
+                        if(avListSize == 0){
+                            System.out.println("No A/V checkedout for this user.");
+                            break;}
+                        for(int i = 0; i < selectedUser2.getLibraryCard().getCheckedOutAV().size(); i++){
+                            System.out.println( i+1 + ". " + selectedUser2.getLibraryCard().getCheckedOutAV().get(i));
+                        }
+                        
+                        int returnAVIndex = getUserChoice();
+                        AudioVideoMaterial returnAV = selectedUser2.getLibraryCard().getCheckedOutAV().get(returnAVIndex-1);
+
+                        if (selectedUser2 != null){
+                            selectedUser2.getLibraryCard().returnAV(returnAV);
+                        }
+                    
+                    break;
+                    default:
+                    System.out.println("bad choice");
+                    break;
                 }
+
+                // Book selectedBook2 = selectBook();
+
+                // System.out.println(selectedUser2.getLibraryCard());
+                // if (selectedUser2 != null){
+                //     selectedUser2.getLibraryCard().returnBook(selectedBook2);
+                // }
                 break;
             case 8:
                 System.out.println("Get fines.");
@@ -373,18 +472,41 @@ public class Library {
         }
     }
 
+    public AudioVideoMaterial selectAV(){
+        int selectIndex = getUserAVSelection();
+        if (selectIndex >= 0 && selectIndex <= avMaterials.size()){
+            return avMaterials.get(selectIndex - 1);
+        } else {
+            System.out.println("invalid av selection.");
+            return null;
+        }
+    }
+
+    private int getUserAVSelection(){
+        System.out.println("Select a AV selection by its index:");
+        displayAvailableAV();
+
+        Scanner scanner = new Scanner(System.in);
+        int selectIndex = scanner.nextInt();
+        scanner.nextLine();
+
+        return selectIndex;
+    }
+
         // Method to allow the user to select a book by its index
     private int getUserBookSelection() {
         System.out.println("Select a book by its index:");
         displayAvailableBooks(); // Display a list of available books (you need to implement this method)
-
-        Scanner scanner = new Scanner(System.in);
-        int selectedIndex = scanner.nextInt();
-        scanner.nextLine(); // Consume the newline character
-
+        int selectedIndex = getUserChoice();
         return selectedIndex;
     }
 
+    private void displayAvailableAV(){
+        System.out.println("Available AV Material.");
+        for (int i = 0; i < avMaterials.size(); i++){
+            System.out.println((i + 1) + ". " + avMaterials.get(i).getTitle() + ", is checked out?: " + avMaterials.get(i).isCheckedOut());
+        }
+    }
             // Method to display a list of available books to the user
     private void displayAvailableBooks() {
         System.out.println("Available Books:");
@@ -445,8 +567,8 @@ public class Library {
     }
 
     // Method to add user to the system. probably need this not public
-    public void addUser(String username, String pass, String email, String first, String last, int age) {
-        User newUser = new User(username, pass, email, first, last, age, this);
+    public void addUser(String username, String pass, String email, String first, String last, int age, String address, String phoneNum) {
+        User newUser = new User(username, pass, email, first, last, age, this, address, phoneNum);
         users.add(newUser);
         userCount++;
     }

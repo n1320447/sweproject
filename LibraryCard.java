@@ -26,6 +26,14 @@ public class LibraryCard {
         this.user = user;
     }
 
+    public List<Book> getCheckedOutBooks(){
+        return checkedOutBooks;
+    }
+
+    public List<AudioVideoMaterial> getCheckedOutAV(){
+        return checkedOutAV;
+    }
+
     // Add a method to check out a book for the user associated with this card
 
     //public void checkOutBook(Book book) {
@@ -80,10 +88,18 @@ public class LibraryCard {
 
     // Add a method to check out an audio/video material for the user associated with this card
     public void checkOutAV(AudioVideoMaterial avmaterial, int date) {
-        checkedOutAV.add(avmaterial);
-        avmaterial.setCheckedOut(true);
+        if(!user.getIsChild() || (user.getIsChild() && checkedOutAV.size() <= 5)){
+            checkedOutAV.add(avmaterial);
+            Checkout.checkOutAV(avmaterial, this);
 
-        avmaterial.setDateCheckedOut(date);
+            System.out.println("In LibraryCard class: AV material " + avmaterial.getTitle() + " checked out successfully!");
+        } else {
+            System.out.println("In LibraryCard class: Unable to check AV material out: maximum items check out reached.");
+        }
+        // checkedOutAV.add(avmaterial);
+        // avmaterial.setCheckedOut(true);
+
+        // avmaterial.setDateCheckedOut(date);
     }
 
     // Add a method to return an audio/video material for the user associated with this card
@@ -102,9 +118,11 @@ public class LibraryCard {
     public void checkOutBook(Book book){
         Checkout.checkOutBook(book, this);
     }
+
+    /*
     public void checkOutMagazine(Magazines magazine){
         Checkout.checkOutMagazine(magazine, this);
-    }
+    }*/
 
     public void checkOutAV(AudioVideoMaterial avMaterial){
         Checkout.checkOutAV(avMaterial, this);
@@ -115,23 +133,28 @@ public class LibraryCard {
         checkedOutBooks.remove(book);
     }
 
+    /*
     public void returnMagazine(Magazines magazine){
         Return.returnMagazine(magazine, this);
-    }
+    }*/
 
     public void returnAV(AudioVideoMaterial avMaterial){
         Return.returnAV(avMaterial, this);
+        checkedOutAV.remove(avMaterial);
     }
 
     public void displayCheckedout(){
         for (int i = 0; i < checkedOutAV.size(); i++){
-            System.out.println(checkedOutAV);
+            System.out.println(checkedOutAV.get(i).getTitle());
         }
         for (int i = 0; i < checkedOutBooks.size(); i++){
-            System.out.println(checkedOutBooks);
+            System.out.println(checkedOutBooks.get(i).getTitle());
         }
         for (int i = 0; i < checkedOutMagazines.size(); i++){
-            System.out.println(checkedOutMagazines);
+            System.out.println(checkedOutMagazines.get(i).getTitle());
+        }
+        if(checkedOutAV.size() == 0 && checkedOutBooks.size() == 0){
+            System.out.println("No books or AV material checked out.");
         }
 
     }
