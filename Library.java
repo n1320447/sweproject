@@ -24,8 +24,8 @@ public class Library {
         users.add(newUser);
         User newUser2 = new User("mike2", "mpassword", "mike@gmail.com", "Mike", "Smith");
         users.add(newUser2);*/
-        addUser("nestor1", "password1", "nestor@gmail.com", "Nestor", "Govea", 22);
-        addUser("mike2", "mpassword", "mike@gmail.com", "Mike", "Smith", 10);
+        addUser("nestor1", "password1", "nestor@gmail.com", "Nestor", "Govea", 22, "1980 Bob Cat Street");
+        addUser("mike2", "mpassword", "mike@gmail.com", "Mike", "Smith", 10, "1999 The Square Avenue.");
 
 
         // increment userCount by 2
@@ -135,7 +135,10 @@ public class Library {
                         System.out.println("Enter age:");
                         int age = Integer.parseInt(scanner.nextLine());
 
-                        addUser(userName, passWord, email, firstName, lastName, age);
+                        System.out.println("Enter address");
+                        String address = scanner.nextLine();
+
+                        addUser(userName, passWord, email, firstName, lastName, age, address);
 
                         // Add any additional logic for User account creation
                         break;
@@ -486,8 +489,8 @@ public class Library {
     }
 
     // Method to add user to the system. probably need this not public
-    public void addUser(String username, String pass, String email, String first, String last, int age) {
-        User newUser = new User(username, pass, email, first, last, age, this);
+    public void addUser(String username, String pass, String email, String first, String last, int age, String address) {
+        User newUser = new User(username, pass, email, first, last, age, this, address);
         users.add(newUser);
         userCount++;
     }
