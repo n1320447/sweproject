@@ -33,17 +33,38 @@ public class Library {
 
         //add in list of books
             // Create and add books
-        Book book1 = new Book("Book Title 1", "Author 1", 2000, false, 5);
-        books.add(book1);
+        // Book book1 = new Book("Book Title 1", "Author 1", 2000, false, 5);
+        // books.add(book1);
         
-        Book book2 = new Book("Book Title 2", "Author 2", 2010, false, 3.2);
+        // Book book2 = new Book("Book Title 2", "Author 2", 2010, false, 3.2);
+        // books.add(book2);
+
+        
+
+        Book book1 = new Book("The Fellowship of the Ring", "J.R.R. Tolkien", 1954, false, 5);
+        books.add(book1);
+
+        Book book2 = new Book("The Two Towers", "J.R.R. Tolkien", 1954, false, 3.2);
         books.add(book2);
+
+        Book book3 = new Book("The Return of the King", "J.R.R. Tolkien", 1955, false, 4.8);
+        books.add(book3);
+
+
+
+
+        
 
         //add in list of AV Materials
 
         // Set the library in needed classes
         Return.setLibrary(this);
         Checkout.setLibrary(this);
+
+        users.get(0).getLibraryCard().checkOutBook(book1, getDay());
+        users.get(0).getLibraryCard().changeFines(50);
+
+        System.out.println(users.get(0).getLibraryCard().getFines());
     }
 
     public void libraryMenu(){
@@ -259,6 +280,12 @@ public class Library {
                 break;
             case 8:
                 System.out.println("Get fines.");
+                User getFineUser = selectUser();
+                if (getFineUser.getLibraryCard().getFines() == 0){
+                    System.out.println("No fines.");
+                    break;
+                }
+                System.out.println("Fines for " + getFineUser.getFirstName() + ": " + getFineUser.getLibraryCard().getFines());
                 break;
             case 9:
                 System.out.println(" Exiting the library system. Goodbye!");
@@ -296,7 +323,7 @@ public class Library {
 
     public int getUserIndex(){
         System.out.println("Available Users:");
-        for (int i = 0; i < books.size(); i++) {
+        for (int i = 0; i < users.size(); i++) {
             System.out.println((i + 1) + ". " + users.get(i).getFirstName());
 
         }
