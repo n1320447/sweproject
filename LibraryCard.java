@@ -125,5 +125,9 @@ public class LibraryCard {
         fines += amount;
     }
 
+    public double getFines(){
+        return fines;
+    }
+
     // Add any other methods specific to the LibraryCard class
 }
