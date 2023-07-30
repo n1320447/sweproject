@@ -26,6 +26,14 @@ public class LibraryCard {
         this.user = user;
     }
 
+    public List<Book> getCheckedOutBooks(){
+        return checkedOutBooks;
+    }
+
+    public List<AudioVideoMaterial> getCheckedOutAV(){
+        return checkedOutAV;
+    }
+
     // Add a method to check out a book for the user associated with this card
 
     //public void checkOutBook(Book book) {
@@ -116,6 +124,7 @@ public class LibraryCard {
 
     public void returnAV(AudioVideoMaterial avMaterial){
         Return.returnAV(avMaterial, this);
+        checkedOutAV.remove(avMaterial);
     }
 
     public void displayCheckedout(){
