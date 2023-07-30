@@ -321,14 +321,62 @@ public class Library {
                 // ... (Add the logic for creating and adding a new magazine)
                 break;
             case 7:
-                System.out.println("Please select a User to return a book for.");
+                System.out.println("Please select a User to return an item for.");
                 User selectedUser2 = selectUser();
-                Book selectedBook2 = selectBook();
+                //switch for av or book
+                //display respective av or book for selected user.
+                System.out.println("select what type of item to return");
+                System.out.println("1. Book");
+                System.out.println("2. AV material");
+                System.out.println(" ");
+                int itemTypeReturn = getUserChoice();
+                switch(itemTypeReturn){
+                    case 1:
+                        // Book selectedBook = selectBook();
+                        int bookListSize = selectedUser2.getLibraryCard().getCheckedOutBooks().size();
+                        if(bookListSize == 0){
+                            System.out.println("No books checkedout for this user.");
+                            break;}
+                        for(int i = 0; i < selectedUser2.getLibraryCard().getCheckedOutBooks().size(); i++){
+                            System.out.println( i+1 + ". " + selectedUser2.getLibraryCard().getCheckedOutBooks().get(i));
+                        }
+                        int returnBookIndex = getUserChoice();
+                        Book returnBook = selectedUser2.getLibraryCard().getCheckedOutBooks().get(returnBookIndex-1);
 
-                System.out.println(selectedUser2.getLibraryCard());
-                if (selectedUser2 != null){
-                    selectedUser2.getLibraryCard().returnBook(selectedBook2);
+                        if (selectedUser2 != null){
+                            selectedUser2.getLibraryCard().returnBook(returnBook);
+                        }
+                        break;
+
+                    case 2:
+    
+                        int avListSize = selectedUser2.getLibraryCard().getCheckedOutAV().size();
+                        if(avListSize == 0){
+                            System.out.println("No A/V checkedout for this user.");
+                            break;}
+                        for(int i = 0; i < selectedUser2.getLibraryCard().getCheckedOutAV().size(); i++){
+                            System.out.println( i+1 + ". " + selectedUser2.getLibraryCard().getCheckedOutAV().get(i));
+                        }
+                        
+                        int returnAVIndex = getUserChoice();
+                        AudioVideoMaterial returnAV = selectedUser2.getLibraryCard().getCheckedOutAV().get(returnAVIndex-1);
+
+                        if (selectedUser2 != null){
+                            selectedUser2.getLibraryCard().returnAV(returnAV);
+                        }
+                    
+                    break;
+                    default:
+                    System.out.println("bad choice");
+                    break;
                 }
+
+                // Book selectedBook2 = selectBook();
+
+                // System.out.println(selectedUser2.getLibraryCard());
+                // if (selectedUser2 != null){
+                //     selectedUser2.getLibraryCard().returnBook(selectedBook2);
+                // }
                 break;
             case 8:
                 System.out.println("Get fines.");
