@@ -51,6 +51,7 @@ public class LibraryCard {
             book.setCheckedOut(true);
 
             book.setDateCheckedOut(date);
+            Checkout.checkOutBook(book, this);
 
             System.out.println("Book '" + book.getTitle() + "' checked out successfully!");
         } else {
@@ -98,8 +99,8 @@ public class LibraryCard {
     }
 
     public void returnBook(Book book){
-        fines += library.turnBookIn(book);
         Return.returnBook(book, this);
+        checkedOutBooks.remove(book);
     }
 
     public void returnMagazine(Magazines magazine){
@@ -121,6 +122,11 @@ public class LibraryCard {
             System.out.println(checkedOutMagazines);
         }
 
+    }
+
+    // Method is called to either add or subtract fines on this LibraryCard
+    public void changeFines(double amount) {
+        fines += amount;
     }
 
     // Add any other methods specific to the LibraryCard class

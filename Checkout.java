@@ -9,6 +9,7 @@ public class Checkout {
     public static void checkOutBook(Book book, LibraryCard libraryCard){
         if(!book.isCheckedOut()){
             checkedOutBooks.add(book);
+            Return.addBook(book);
             book.setCheckedOut(true);
             System.out.println("Book: " + book.getTitle() + " checked out successfully.");
         }
@@ -31,6 +32,7 @@ public class Checkout {
     public static void checkOutAV(AudioVideoMaterial avMaterial, LibraryCard libraryCard){
         if(!avMaterial.isCheckedOut()){
             checkedOutAV.add(avMaterial);
+            Return.addAV(avMaterial);
             avMaterial.setCheckedOut(true);
             System.out.println("AV material: " + avMaterial.getTitle() + " checked out successfully.");
         }
@@ -41,5 +43,15 @@ public class Checkout {
 
     public static boolean anyItemCheckedOut(){
         return checkedOutAV.isEmpty() || checkedOutBooks.isEmpty() || checkedOutMagazines.isEmpty();
+    }
+
+    // Method to remove book from arrayList, called by Return to maintain records
+    public static void removeBook(Book book) {
+        checkedOutBooks.remove(book);
+    }
+
+    // Method to remove AV from arrayList, called by Return to maintain records
+    public static void removeAV(AudioVideoMaterial av) {
+        checkedOutAV.remove(av);
     }
 }

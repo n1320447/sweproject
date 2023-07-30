@@ -40,6 +40,9 @@ public class Library {
         books.add(book2);
 
         //add in list of AV Materials
+
+        // Set the library in Return
+        Return.setLibrary(this);
     }
 
     public void libraryMenu(){
@@ -356,8 +359,9 @@ public class Library {
     }
 
     // Method is called when an item is returned. If the item has an outstanding request,
-    // then item is automatically checked out to the requesting user. - maybe rename/move method
-    private boolean checkRequests(Item returnedItem) {
+    // then item is automatically checked out to the requesting user.
+    // Returns null if there is no requests for book
+    public LibraryCard checkRequests(Item returnedItem) {
         for (ItemRequest request: itemRequestList)
             if(request.item == returnedItem) {
                 if (returnedItem.getItemType() == Item.ItemType.BOOK){
@@ -365,45 +369,16 @@ public class Library {
                     User user  = request.card.getUser();
                     System.out.println(user.getFirstName() + " " + user.getLastName() + " requested book "
                             + book.getTitle() + ", attempting to check out book");
-                    request.card.checkOutBook(book, getDay());
+                    //request.card.checkOutBook(book, getDay());
                 }
                 else {
                     AudioVideoMaterial av = (AudioVideoMaterial) returnedItem;
-                    request.card.checkOutAV(av, getDay());
+                    //request.card.checkOutAV(av, getDay());
                 }
                 removeRequest(request);
-                return true;
+                return request.card;
             }
-        return false;
-    }
-
-    // Method to turn book in. This returns the fine that the user must pay if the book was overdue
-    public double turnBookIn(Book book) {
-        double fine = 0;
-        boolean reloaned = false;
-        int daysLoaned = getDay() - book.getDateCheckedOut();
-        int overdueDays = 0;
-
-        // Calculate the flat amount due
-        if (book.getBestseller() && daysLoaned > 14) {
-            fine = (double) (daysLoaned - 14) * 0.1;
-        } else if (daysLoaned > 21) {
-            fine = (double) (daysLoaned - 21) * 0.1;
-        }
-
-        // Check if flat fine is too high for book value
-        if (book.getValue() < fine)
-            fine = book.getValue();
-
-        // Check if there is request out for book
-        reloaned = checkRequests((Item)book);
-        if (!reloaned) {
-            System.out.println("inside checking requests");
-            book.setCheckedOut(false);
-            book.setDateCheckedOut(-1);
-        }
-
-        return fine;
+        return null;
     }
 
     public int getDay() {
