@@ -27,5 +27,15 @@ public class AudioVideoMaterial extends Item {
     }
 
 
+    @Override
+    public String toString() {
+        return "Book{" +
+               "title='" + getTitle() + '\'' + // Use the getter method for the title
+               ", author='" + director + '\'' +
+               ", publicationYear=" + getPublicationYear() + // Use the getter method for the publication year
+               ", itemType=" + getItemType() +
+               ", checkedOut=" + isCheckedOut() +
+               '}';
+    }
     // ... (rest of the code specific to audio/video materials)
 }
