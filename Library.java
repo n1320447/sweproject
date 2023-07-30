@@ -24,8 +24,8 @@ public class Library {
         users.add(newUser);
         User newUser2 = new User("mike2", "mpassword", "mike@gmail.com", "Mike", "Smith");
         users.add(newUser2);*/
-        addUser("nestor1", "password1", "nestor@gmail.com", "Nestor", "Govea", 22, "1980 Bob Cat Street");
-        addUser("mike2", "mpassword", "mike@gmail.com", "Mike", "Smith", 10, "1999 The Square Avenue.");
+        addUser("nestor1", "password1", "nestor@gmail.com", "Nestor", "Govea", 22, "1980 Bob Cat Street", "123-456-7899");
+        addUser("mike2", "mpassword", "mike@gmail.com", "Mike", "Smith", 10, "1999 The Square Avenue.", "512-343-5234");
 
 
         // increment userCount by 2
@@ -85,7 +85,7 @@ public class Library {
         System.out.println("Please choose what to do by the number.");
         System.out.println("1. Create Account");
         System.out.println("2. View which items are checked out.");
-        System.out.println("3. Get number of Accounts in System.");
+        System.out.println("3. Get number of Accounts in System and basic information.");
         System.out.println("4. Checkout an Item");
         System.out.println("5. Add item to library (book or audio/visual)");
         System.out.println("6. Add Magazine to library");
@@ -138,7 +138,10 @@ public class Library {
                         System.out.println("Enter address");
                         String address = scanner.nextLine();
 
-                        addUser(userName, passWord, email, firstName, lastName, age, address);
+                        System.out.println("Enter Phone Number");
+                        String phoneNum = scanner.nextLine();
+
+                        addUser(userName, passWord, email, firstName, lastName, age, address, phoneNum);
 
                         // Add any additional logic for User account creation
                         break;
@@ -194,6 +197,7 @@ public class Library {
                         //     }
                 
                         // }
+                    System.out.println(" ");
                     break;
 
                     case 2:
@@ -201,6 +205,7 @@ public class Library {
                         User userChoice = selectUser();
                         System.out.println(userChoice.getFirstName());
                         userChoice.getLibraryCard().displayCheckedout();
+                        System.out.println(" ");
                     break;
                 }
      
@@ -212,7 +217,11 @@ public class Library {
             case 3:
                 System.out.println(" User count is: " + getNumberOfUsers());
                 System.out.println();
-                System.out.println(users);
+                // System.out.println(users);
+                for(int i = 0; i < users.size(); i++){
+                    System.out.println(i+1 + ". User Name: " + users.get(i).getFirstName() + ", Address: " + users.get(i).getAddress() +  ", Phone Number: " + users.get(i).getPhoneNum() + ", Library Card Number: " + users.get(i).getLibCardNum());
+                }
+                System.out.println(" ");
                 break;
             case 4:
                 // System.out.println(books);
@@ -489,8 +498,8 @@ public class Library {
     }
 
     // Method to add user to the system. probably need this not public
-    public void addUser(String username, String pass, String email, String first, String last, int age, String address) {
-        User newUser = new User(username, pass, email, first, last, age, this, address);
+    public void addUser(String username, String pass, String email, String first, String last, int age, String address, String phoneNum) {
+        User newUser = new User(username, pass, email, first, last, age, this, address, phoneNum);
         users.add(newUser);
         userCount++;
     }

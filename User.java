@@ -12,13 +12,14 @@ public class User extends Account {
     private boolean isChild;
     private String address;
     private int libraryCardNum;
+    private String phoneNum;
 
-    public User(String username, String password, String email, String firstName, String lastName, int age,Library library, String address) {
+    public User(String username, String password, String email, String firstName, String lastName, int age,Library library, String address, String phoneNum) {
         super(username, password, email);
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
-       
+        this.phoneNum = phoneNum;
         this.libraryCard = new LibraryCard(this, library);
         if (age > 12)
             isChild = false;
@@ -70,6 +71,10 @@ public class User extends Account {
 
     public String getAddress(){
         return address;
+    }
+
+    public String getPhoneNum(){
+        return phoneNum;
     }
 
     // public void setCheckedOutBooks(List<Book> checkedOutBooks) {
