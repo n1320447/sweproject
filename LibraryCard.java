@@ -47,14 +47,11 @@ public class LibraryCard {
     public void checkOutBook(Book book, int date) {
         if (!user.getIsChild() || (user.getIsChild() && checkedOutBooks.size() <= 5)) {
             checkedOutBooks.add(book);
-            // user.getCheckedOutBooks().add(book);
-            book.setCheckedOut(true);
+            Checkout.checkOutBook(book, this);
 
-            book.setDateCheckedOut(date);
-
-            System.out.println("Book '" + book.getTitle() + "' checked out successfully!");
+            System.out.println("In LibraryCard class: Book '" + book.getTitle() + "' checked out successfully!");
         } else {
-            System.out.println("Unable to check book out: maximum items check out reached");
+            System.out.println("In LibraryCard class: Unable to check book out: maximum items check out reached");
         }
     }
 
@@ -98,8 +95,8 @@ public class LibraryCard {
     }
 
     public void returnBook(Book book){
-        fines += library.turnBookIn(book);
         Return.returnBook(book, this);
+        checkedOutBooks.remove(book);
     }
 
     public void returnMagazine(Magazines magazine){
@@ -121,6 +118,11 @@ public class LibraryCard {
             System.out.println(checkedOutMagazines);
         }
 
+    }
+
+    // Method is called to either add or subtract fines on this LibraryCard
+    public void changeFines(double amount) {
+        fines += amount;
     }
 
     // Add any other methods specific to the LibraryCard class
