@@ -59,6 +59,7 @@ public class Library {
         System.out.println("5. Add item to library (book or audio/visual)");
         System.out.println("6. Add Magazine to library");
         System.out.println("7. Return book");
+        System.out.println("8. Get Fines.");
         System.out.println("9. Exit");
         
         choice = getUserChoice();
@@ -255,6 +256,9 @@ public class Library {
                 if (selectedUser2 != null){
                     selectedUser2.getLibraryCard().returnBook(selectedBook2);
                 }
+                break;
+            case 8:
+                System.out.println("Get fines.");
                 break;
             case 9:
                 System.out.println(" Exiting the library system. Goodbye!");
