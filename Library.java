@@ -73,8 +73,10 @@ public class Library {
 
         users.get(0).getLibraryCard().checkOutBook(book1, getDay());
         users.get(0).getLibraryCard().changeFines(50);
+        addRequest(users.get(0).getLibraryCard(), book2);
 
         System.out.println(users.get(0).getLibraryCard().getFines());
+        System.out.println(itemRequestList);
     }
 
     public void libraryMenu(){
@@ -224,33 +226,52 @@ public class Library {
                 System.out.println(" ");
                 break;
             case 4:
-                // System.out.println(books);
-                // System.out.println(books);
-                System.out.println("Please select a User to check out a book for.");
-                User selectedUser = selectUser();
+                System.out.println("Please select what type of checkout.");
+                System.out.println("1. Checkout Book");
+                System.out.println("2. Renew Book");
+                int checkoutType = scanner.nextInt();
+                scanner.nextLine();
 
-                System.out.println("select what type of item to checkout");
-                System.out.println("1. Book");
-                System.out.println("2. AV material");
-                System.out.println(" ");
-                int itemType = getUserChoice();
-                switch(itemType){
+                switch(checkoutType){
                     case 1:
-                    Book selectedBook = selectBook();
-                    System.out.println(selectedUser.getLibraryCard());
-                    if (selectedUser != null){
-                        selectedUser.getLibraryCard().checkOutBook(selectedBook, getDay());
-                    }
-                    break;
+                        // System.out.println(books);
+                        // System.out.println(books);
+                        System.out.println("Please select a User to check out a book for.");
+                        User selectedUser = selectUser();
 
+                        System.out.println("select what type of item to checkout");
+                        System.out.println("1. Book");
+                        System.out.println("2. AV material");
+                        System.out.println(" ");
+                        int itemType = getUserChoice();
+                        switch(itemType){
+                            case 1:
+                            Book selectedBook = selectBook();
+                            System.out.println(selectedUser.getLibraryCard());
+                            if (selectedUser != null){
+                                selectedUser.getLibraryCard().checkOutBook(selectedBook, getDay());
+                            }
+                            break;
+
+                            case 2:
+                                AudioVideoMaterial selectedAV = selectAV();
+                                System.out.println(selectedUser.getLibraryCard());
+                                if (selectedUser != null){
+                                    selectedUser.getLibraryCard().checkOutAV(selectedAV, getDay());
+                                }
+                                break;
+                        }
                     case 2:
-                    AudioVideoMaterial selectedAV = selectAV();
-                    System.out.println(selectedUser.getLibraryCard());
-                    if (selectedUser != null){
-                        selectedUser.getLibraryCard().checkOutAV(selectedAV, getDay());
-                    }
-                    break;
+                        System.out.println("Please select a User to renew a book for.");
+                        User userChoice = selectUser();
+                        Book bookChoice = selectBook();
+
+                        System.out.println(userChoice.getLibraryCard());
+                        if (userChoice != null){
+                            userChoice.getLibraryCard().renewBook(bookChoice, getDay());
+                        }
                 }
+
                 
                 // Book selectedBook = selectBook();
                 // System.out.println(book);
