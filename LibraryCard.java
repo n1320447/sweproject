@@ -47,15 +47,11 @@ public class LibraryCard {
     public void checkOutBook(Book book, int date) {
         if (!user.getIsChild() || (user.getIsChild() && checkedOutBooks.size() <= 5)) {
             checkedOutBooks.add(book);
-            // user.getCheckedOutBooks().add(book);
-            book.setCheckedOut(true);
-
-            book.setDateCheckedOut(date);
             Checkout.checkOutBook(book, this);
 
-            System.out.println("Book '" + book.getTitle() + "' checked out successfully!");
+            System.out.println("In LibraryCard class: Book '" + book.getTitle() + "' checked out successfully!");
         } else {
-            System.out.println("Unable to check book out: maximum items check out reached");
+            System.out.println("In LibraryCard class: Unable to check book out: maximum items check out reached");
         }
     }
 

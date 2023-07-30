@@ -41,8 +41,9 @@ public class Library {
 
         //add in list of AV Materials
 
-        // Set the library in Return
+        // Set the library in needed classes
         Return.setLibrary(this);
+        Checkout.setLibrary(this);
     }
 
     public void libraryMenu(){
