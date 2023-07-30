@@ -20,6 +20,7 @@ public class Checkout {
         }
     }
 
+    /* Cannot checkout/return magazines
     public static void checkOutMagazine(Magazines magazine, LibraryCard libraryCard){
         if(!magazine.isCheckedOut()){
             checkedOutMagazines.add(magazine);
@@ -29,13 +30,14 @@ public class Checkout {
         else{
             System.out.println("Book: " + magazine.getTitle() + " is already checked out.");
         }
-    }
+    }*/
 
     public static void checkOutAV(AudioVideoMaterial avMaterial, LibraryCard libraryCard){
         if(!avMaterial.isCheckedOut()){
             checkedOutAV.add(avMaterial);
             Return.addAV(avMaterial);
             avMaterial.setCheckedOut(true);
+            avMaterial.setDateCheckedOut(library.getDay());
             System.out.println("AV material: " + avMaterial.getTitle() + " checked out successfully.");
         }
         else{
