@@ -94,9 +94,11 @@ public class LibraryCard {
     public void checkOutBook(Book book){
         Checkout.checkOutBook(book, this);
     }
+
+    /*
     public void checkOutMagazine(Magazines magazine){
         Checkout.checkOutMagazine(magazine, this);
-    }
+    }*/
 
     public void checkOutAV(AudioVideoMaterial avMaterial){
         Checkout.checkOutAV(avMaterial, this);
@@ -107,9 +109,10 @@ public class LibraryCard {
         checkedOutBooks.remove(book);
     }
 
+    /*
     public void returnMagazine(Magazines magazine){
         Return.returnMagazine(magazine, this);
-    }
+    }*/
 
     public void returnAV(AudioVideoMaterial avMaterial){
         Return.returnAV(avMaterial, this);
