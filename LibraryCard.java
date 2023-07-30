@@ -55,6 +55,22 @@ public class LibraryCard {
         }
     }
 
+    public void renewBook(Book book, int date){
+        if(!book.isCheckedOut()){
+            System.out.println("Book: '" + book.getTitle() + "' is unable to be renewed, as it is not checked out.");
+        }
+        else if(book.getRenewedBefore() == true) {
+            System.out.println("Book: '" + book.getTitle() + "' is unable to be renewed, as it has already once been renewed.");
+        }
+        else if(library.itemRequestList.contains(book.getTitle())){
+            System.out.println("Book: '" + book.getTitle() + "' is unable to be renewed, as there is currently a checkout request for it.");
+        }
+        else{
+            book.setRenewedBefore(true);
+            Checkout.renewBook(book, this);
+        }
+    }
+
     // Add a method to return a book for the user associated with this card
     //public void returnBook(Book book) {
         //checkedOutBooks.remove(book);
