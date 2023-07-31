@@ -12,7 +12,10 @@ public class Checkout {
             checkedOutBooks.add(book);
             Return.addBook(book);
             book.setCheckedOut(true);
+            book.setStartDate();
+            book.setDueDate();
             book.setDateCheckedOut(library.getDay());
+            
             System.out.println("In Checkout class: Book: " + book.getTitle() + " checked out successfully.");
         }
         else{
@@ -37,6 +40,8 @@ public class Checkout {
             checkedOutAV.add(avMaterial);
             Return.addAV(avMaterial);
             avMaterial.setCheckedOut(true);
+            avMaterial.setStartDate();
+            avMaterial.setDueDate();
             avMaterial.setDateCheckedOut(library.getDay());
             System.out.println("AV material: " + avMaterial.getTitle() + " checked out successfully.");
         }

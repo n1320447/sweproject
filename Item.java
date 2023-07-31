@@ -1,3 +1,6 @@
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+
 public class Item {
     private String title;
     private String author;
@@ -6,6 +9,9 @@ public class Item {
     private boolean checkedOut;
     private int dateCheckedOut;
     private ItemType itemType;
+    private LocalDate startDate;
+    private LocalDate dueDate;
+
 
     public enum ItemType {
         BOOK,
@@ -18,6 +24,9 @@ public class Item {
         this.publicationYear = publicationYear;
         this.itemType = itemType;
         this.checkedOut = false; // By default, the item is not checked out.
+        this.dueDate = null;
+        this.startDate = null;
+
     }
 
     // Getters and setters for the attributes
@@ -79,6 +88,23 @@ public class Item {
         dateCheckedOut = date;
     }
 
+    public void setDueDates(){
+        if(itemType == ItemType.BOOK){
+            startDate.plusDays(21);
+        }
+        if(itemType == ItemType.AUDIO_VIDEO_MATERIAL){
+            startDate.plusDays(14);
+        }
+    }
+
+    public ItemType getType(){
+        return itemType;
+    }
+
+    public void checkBestSeller(){
+        startDate.minusDays(7);
+    }
+    
     // Add any other common methods here
 
     // Method to display item details (can be overridden by subclasses)
