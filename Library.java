@@ -631,14 +631,14 @@ public class Library {
         day++;
     }
 
-    // Method to add user to the system. probably need this not public
+    // Method to add user to the system
     public void addUser(String username, String pass, String email, String first, String last, int age, String address, String phoneNum) {
         User newUser = new User(username, pass, email, first, last, age, this, address, phoneNum);
         users.add(newUser);
         userCount++;
     }
 
-    // Method to add staff member to the system, probably need this not public
+    // Method to add staff member to the system
     public void addStaff(String username, String password, String email, String staffId, String department) {
         Staff newStaff = new Staff(username, password, email, staffId, department);
 
