@@ -2,8 +2,9 @@ import java.util.ArrayList;
 
 public class TestCases {
 
-    private int totalTests = 7;
-
+    private static final int totalTests = 7,
+        largeSet = 100,
+        smallSet = 20;
     public enum ClassType { TESTING }
     TestCases() {
     }
@@ -11,8 +12,41 @@ public class TestCases {
     // Test that creates a number of users to ensure that each user has a unique card id.
     // Satisfies requirement 1
     public boolean testIfUsersGetUniqueCards() {
-        System.out.println();
-        return true;
+        boolean passed = true;
+
+        System.out.println("Beginning unique library card ID test");
+        System.out.println("Creating " + largeSet + " users in new Library object...");
+
+        Library library = new Library(ClassType.TESTING);
+        createUsers(largeSet, library);
+        for(int i = 0; i < library.userCount; i++)
+            System.out.println("User " + (i+1) + "'s LibraryCard ID: " + library.users.get(0).getLibCardNum());
+
+        System.out.println("\nChecking if all ID's are unique...");
+        // Exhaustively compare each ID to ensure they're unique. -----maybe sort this and then search if time to
+        int start = 0,
+            index = 0;
+        while (start != library.users.size()-1) {
+            for (index = start + 1; index < library.users.size(); index++)
+                if (library.users.get(start).getLibCardNum() == library.users.get(index).getLibCardNum()) {
+                    passed = false;
+                    break;
+                }
+            // Leave loop after at least one match
+            if (!passed)
+                break;
+            start++;
+        }
+
+        if(passed)
+            System.out.println("Result: Test passed.");
+        else {
+            System.out.println("Result: Test failed");
+            System.out.println("User's " + (start+1) + " and " + (index+1) + " have identical Library card ID's");
+            System.out.println("User " + (start+1) + ": " + library.users.get(start).getLibCardNum());
+            System.out.println("User " + (index+1) + ": " + library.users.get(index).getLibCardNum());
+        }
+        return passed;
     }
 
     // Test that creates a number of users to ensure that Library keeps track of basic user info
