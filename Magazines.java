@@ -1,4 +1,4 @@
-public class Magazines extends Item{
+public class Magazines extends Item {
     private String editor;
 
     public Magazines(String title, String editor, int publicationYear) {
@@ -13,6 +13,11 @@ public class Magazines extends Item{
 
     public void setEditor(String editor) { // Change method name from setAuthor to setEditor
         this.editor = editor;
+    }
+
+    @Override
+    public boolean canBeCheckedOut() {
+        return false;
     }
 
     @Override

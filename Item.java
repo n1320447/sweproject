@@ -9,7 +9,8 @@ public class Item {
     public enum ItemType {
         BOOK,
         AUDIO_VIDEO_MATERIAL,
-        MAGAZINE
+        MAGAZINE,
+        REFERENCE_BOOK
     }
 
     public Item(String title, int publicationYear, ItemType itemType) {
@@ -78,5 +79,9 @@ public class Item {
         System.out.println("Publication Year: " + publicationYear);
         System.out.println("Item Type: " + itemType);
         System.out.println("Status: " + (checkedOut ? "Checked Out" : "Available"));
+    }
+
+    public boolean canBeCheckedOut() {
+        return true;
     }
 }
