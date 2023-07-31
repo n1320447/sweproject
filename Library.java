@@ -9,6 +9,8 @@ public class Library {
     int userCount = 0;
     int itemCount = 0;
     int day = 0;
+    private Checkout checkout;
+    private Return returnClass;
     List<User> users = new ArrayList<>();
     List<Staff> staff = new ArrayList<>();
     List<Book> books = new ArrayList<>();
@@ -21,6 +23,12 @@ public class Library {
     Library(){
         scanner = new Scanner(System.in);
         System.out.println("new library made");
+
+        // Create Checkout and Return instances and attach them to each other
+        checkout = new Checkout(this);
+        returnClass = new Return(this);
+        checkout.setReturnClass(returnClass);
+        returnClass.setCheckout(checkout);
 
         //create 2 users as soon as library object is created.
         /*User newUser = new User("nestor1", "password1", "nestor@gmail.com", "Nestor", "Govea");
@@ -80,15 +88,31 @@ public class Library {
         referenceBooks.add(rb3);
 
         // Set the library in needed classes
-        Return.setLibrary(this);
-        Checkout.setLibrary(this);
+        //Return.setLibrary(this);
+        //Checkout.setLibrary(this);
 
         users.get(0).getLibraryCard().checkOutBook(book1, getDay());
         users.get(0).getLibraryCard().getCheckedOutBooks().get(0).setStartDate();
         users.get(0).getLibraryCard().getCheckedOutBooks().get(0).setDueDate();
         users.get(0).getLibraryCard().changeFines(50);
 
+        addRequest(users.get(0).getLibraryCard(), book2);
+        addRequest(users.get(1).getLibraryCard(), av2);
+
         System.out.println(users.get(0).getLibraryCard().getFines());
+        System.out.println(users.get(0).getFirstName() + " requests " + itemRequestList.get(0).item.getTitle());
+        System.out.println(users.get(1).getFirstName() + " requests " + itemRequestList.get(1).item.getTitle());
+    }
+
+    // Constructor that creates an empty Library for test purposes
+    Library(TestCases.ClassType type) {
+        assert type == TestCases.ClassType.TESTING: "Error: wrong constructor used";
+
+        // Create Checkout and Return instances and attach them to each other
+        checkout = new Checkout(this);
+        returnClass = new Return(this);
+        checkout.setReturnClass(returnClass);
+        returnClass.setCheckout(checkout);
     }
 
     public void libraryMenu(){
@@ -240,34 +264,71 @@ public class Library {
                 System.out.println(" ");
                 break;
             case 4:
-                // System.out.println(books);
-                // System.out.println(books);
-                System.out.println("Please select a User to check out a book for.");
-                User selectedUser = selectUser();
+                System.out.println("Please select what type of checkout.");
+                System.out.println("1. Checkout");
+                System.out.println("2. Renew");
+                int checkoutType = scanner.nextInt();
+                scanner.nextLine();
 
-                System.out.println("select what type of item to checkout");
-                System.out.println("1. Book");
-                System.out.println("2. AV material");
-                System.out.println(" ");
-                int itemType = getUserChoice();
-                switch(itemType){
+                switch(checkoutType) {
                     case 1:
-                    Book selectedBook = selectBook();
-                    System.out.println(selectedUser.getLibraryCard());
-                    if (selectedUser != null){
-                        selectedUser.getLibraryCard().checkOutBook(selectedBook, getDay());
-                    }
-                    break;
+                        // System.out.println(books);
+                        // System.out.println(books);
+                        System.out.println("Please select a User to check out for.");
+                        User selectedUser = selectUser();
 
+                        System.out.println("select what type of item to checkout");
+                        System.out.println("1. Book");
+                        System.out.println("2. AV material");
+                        System.out.println(" ");
+                        int itemType = getUserChoice();
+                        switch (itemType) {
+                            case 1:
+                                Book selectedBook = selectBook();
+                                System.out.println(selectedUser.getLibraryCard());
+                                if (selectedUser != null) {
+                                    selectedUser.getLibraryCard().checkOutBook(selectedBook, getDay());
+                                }
+                                break;
+
+                            case 2:
+                                AudioVideoMaterial selectedAV = selectAV();
+                                System.out.println(selectedUser.getLibraryCard());
+                                if (selectedUser != null) {
+                                    selectedUser.getLibraryCard().checkOutAV(selectedAV, getDay());
+                                }
+                                break;
+                        }
+                        break;
                     case 2:
-                    AudioVideoMaterial selectedAV = selectAV();
-                    System.out.println(selectedUser.getLibraryCard());
-                    if (selectedUser != null){
-                        selectedUser.getLibraryCard().checkOutAV(selectedAV, getDay());
-                    }
-                    break;
+                        System.out.println("Please select a User to renew for.");
+                        User userChoice = selectUser();
+
+                        System.out.println("Select what type of item to renew.");
+                        System.out.println("1. Book");
+                        System.out.println("2. AV material");
+                        int renewType = scanner.nextInt();
+                        scanner.nextLine();
+
+                        switch(renewType){
+                            case 1:
+                                Book bookChoice = selectBook();
+
+                                System.out.println(userChoice.getLibraryCard());
+                                if (userChoice != null) {
+                                    userChoice.getLibraryCard().renewBook(bookChoice, getDay());
+                                }
+                                break;
+                            case 2:
+                                AudioVideoMaterial avChoice = selectAV();
+                                System.out.println(userChoice.getLibraryCard());
+                                if(userChoice != null){
+                                    userChoice.getLibraryCard().renewAV(avChoice, getDay());
+                                }
+                                break;
+                        }
                 }
-                
+                break;
                 // Book selectedBook = selectBook();
                 // System.out.println(book);
                 // System.out.println(selectedUser);
@@ -276,7 +337,6 @@ public class Library {
                 // if (selectedUser != null){
                 //     selectedUser.getLibraryCard().checkOutBook(selectedBook, getDay());
                 // }
-                break;
             case 5:
                 System.out.println(" Add Item.");
                 System.out.println();
@@ -589,16 +649,24 @@ public class Library {
         day++;
     }
 
-    // Method to add user to the system. probably need this not public
+    // Method to add user to the system
     public void addUser(String username, String pass, String email, String first, String last, int age, String address, String phoneNum) {
         User newUser = new User(username, pass, email, first, last, age, this, address, phoneNum);
         users.add(newUser);
         userCount++;
     }
 
-    // Method to add staff member to the system, probably need this not public
+    // Method to add staff member to the system
     public void addStaff(String username, String password, String email, String staffId, String department) {
         Staff newStaff = new Staff(username, password, email, staffId, department);
 
+    }
+
+    public Checkout getCheckout() {
+        return checkout;
+    }
+
+    public Return getReturn() {
+        return returnClass;
     }
 }

@@ -3,14 +3,19 @@ import java.util.List;
 
 public class Checkout {
 
-    private static List<Book> checkedOutBooks = new ArrayList<>();
-    private static List<Magazines> checkedOutMagazines = new ArrayList<>();
-    private static List<AudioVideoMaterial> checkedOutAV = new ArrayList<>();
-    private static Library library;
-    public static void checkOutBook(Book book, LibraryCard libraryCard){
+    private List<Book> checkedOutBooks = new ArrayList<>();
+    private List<Magazines> checkedOutMagazines = new ArrayList<>();
+    private List<AudioVideoMaterial> checkedOutAV = new ArrayList<>();
+    private Library library;
+    private Return returnClass;
+
+    Checkout(Library library) {
+        this.library = library;
+    }
+    public void checkOutBook(Book book, LibraryCard libraryCard){
         if(!book.isCheckedOut()){
             checkedOutBooks.add(book);
-            Return.addBook(book);
+            returnClass.addBook(book);
             book.setCheckedOut(true);
             book.setStartDate();
             book.setDueDate();
@@ -35,10 +40,10 @@ public class Checkout {
         }
     }*/
 
-    public static void checkOutAV(AudioVideoMaterial avMaterial, LibraryCard libraryCard){
+    public void checkOutAV(AudioVideoMaterial avMaterial, LibraryCard libraryCard){
         if(!avMaterial.isCheckedOut()){
             checkedOutAV.add(avMaterial);
-            Return.addAV(avMaterial);
+            returnClass.addAV(avMaterial);
             avMaterial.setCheckedOut(true);
             avMaterial.setStartDate();
             avMaterial.setDueDate();
@@ -50,21 +55,35 @@ public class Checkout {
         }
     }
 
-    public static boolean anyItemCheckedOut(){
+    public boolean anyItemCheckedOut(){
         return checkedOutAV.isEmpty() || checkedOutBooks.isEmpty() || checkedOutMagazines.isEmpty();
     }
 
     // Method to remove book from arrayList, called by Return to maintain records
-    public static void removeBook(Book book) {
+    public void removeBook(Book book) {
         checkedOutBooks.remove(book);
     }
 
     // Method to remove AV from arrayList, called by Return to maintain records
-    public static void removeAV(AudioVideoMaterial av) {
+    public void removeAV(AudioVideoMaterial av) {
         checkedOutAV.remove(av);
     }
 
-    public static void setLibrary(Library newLibrary) {
-        library = newLibrary;
+    public void renewBook(Book book, LibraryCard libraryCard){
+        book.setCheckedOut(true);
+        book.setDateCheckedOut(library.getDay());
+        System.out.println("Book: '" + book.getTitle() + "' has been renewed successfully!");
+    }
+    public void renewAV(AudioVideoMaterial avMaterial, LibraryCard libraryCard){
+        avMaterial.setCheckedOut(true);
+        avMaterial.setDateCheckedOut(library.getDay());
+        System.out.println("AV Material: '" + avMaterial.getTitle() + "' has been renewed successfully!");
+    }
+
+    public void setReturnClass(Return returnClass) {
+        this.returnClass = returnClass;
+    }
+    public Return getReturnClass() {
+        return returnClass;
     }
 }
