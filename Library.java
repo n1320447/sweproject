@@ -9,6 +9,8 @@ public class Library {
     int userCount = 0;
     int itemCount = 0;
     int day = 0;
+    private Checkout checkout;
+    private Return returnClass;
     List<User> users = new ArrayList<>();
     List<Staff> staff = new ArrayList<>();
     List<Book> books = new ArrayList<>();
@@ -20,6 +22,12 @@ public class Library {
     Library(){
         scanner = new Scanner(System.in);
         System.out.println("new library made");
+
+        // Create Checkout and Return instances and attach them to each other
+        checkout = new Checkout(this);
+        returnClass = new Return(this);
+        checkout.setReturnClass(returnClass);
+        returnClass.setCheckout(checkout);
 
         //create 2 users as soon as library object is created.
         /*User newUser = new User("nestor1", "password1", "nestor@gmail.com", "Nestor", "Govea");
@@ -71,8 +79,8 @@ public class Library {
         magazines.add(mg3);
 
         // Set the library in needed classes
-        Return.setLibrary(this);
-        Checkout.setLibrary(this);
+        //Return.setLibrary(this);
+        //Checkout.setLibrary(this);
 
         users.get(0).getLibraryCard().checkOutBook(book1, getDay());
         users.get(0).getLibraryCard().getCheckedOutBooks().get(0).setStartDate();
@@ -85,6 +93,17 @@ public class Library {
         System.out.println(users.get(0).getLibraryCard().getFines());
         System.out.println(users.get(0).getFirstName() + " requests " + itemRequestList.get(0).item.getTitle());
         System.out.println(users.get(1).getFirstName() + " requests " + itemRequestList.get(1).item.getTitle());
+    }
+
+    // Constructor that creates an empty Library for test purposes
+    Library(TestCases.ClassType type) {
+        assert type == TestCases.ClassType.TESTING: "Error: wrong constructor used";
+
+        // Create Checkout and Return instances and attach them to each other
+        checkout = new Checkout(this);
+        returnClass = new Return(this);
+        checkout.setReturnClass(returnClass);
+        returnClass.setCheckout(checkout);
     }
 
     public void libraryMenu(){
@@ -623,5 +642,13 @@ public class Library {
     public void addStaff(String username, String password, String email, String staffId, String department) {
         Staff newStaff = new Staff(username, password, email, staffId, department);
 
+    }
+
+    public Checkout getCheckout() {
+        return checkout;
+    }
+
+    public Return getReturn() {
+        return returnClass;
     }
 }
