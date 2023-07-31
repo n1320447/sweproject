@@ -1,7 +1,13 @@
+import java.time.LocalDate;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+
 public class AudioVideoMaterial extends Item {
     private String director;
     private int dateCheckedOut;
     private double value;
+    private LocalDate startDate;
+    private LocalDate dueDate;
 
     public AudioVideoMaterial(String title, String director, int publicationYear, double value) {
         super(title, publicationYear, ItemType.AUDIO_VIDEO_MATERIAL);
@@ -34,6 +40,28 @@ public class AudioVideoMaterial extends Item {
 
     public void setValue(double newVal) {
         value = newVal;
+    }
+
+    public void setStartDate(){
+        startDate = LocalDate.now();
+        System.out.println("startDate set to: " + startDate);
+    }
+
+    public void setDueDate(){
+        if(super.getItemType() == ItemType.BOOK){
+            dueDate = startDate.plusDays(21);
+            System.out.println("DueDate set to: " + dueDate);
+        }
+        if(super.getItemType() == ItemType.AUDIO_VIDEO_MATERIAL){
+            dueDate = startDate.plusDays(14);
+        }
+        // if(bestseller == true){
+        //     dueDate = startDate.minusDays(7);
+        // }
+    }
+
+    public LocalDate getDueDate(){
+        return dueDate;
     }
 
     @Override

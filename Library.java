@@ -1,6 +1,8 @@
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 public class Library {
     Scanner scanner;
@@ -48,6 +50,7 @@ public class Library {
         books.add(book2);
 
         Book book3 = new Book("The Return of the King", "J.R.R. Tolkien", 1955, false, 4.8);
+        
         books.add(book3);
 
         AudioVideoMaterial av1 = new AudioVideoMaterial("audio1", "magAuthor1", 1999, 15);
@@ -72,6 +75,8 @@ public class Library {
         Checkout.setLibrary(this);
 
         users.get(0).getLibraryCard().checkOutBook(book1, getDay());
+        users.get(0).getLibraryCard().getCheckedOutBooks().get(0).setStartDate();
+        users.get(0).getLibraryCard().getCheckedOutBooks().get(0).setDueDate();
         users.get(0).getLibraryCard().changeFines(50);
 
         addRequest(users.get(0).getLibraryCard(), book2);
@@ -86,7 +91,7 @@ public class Library {
         int choice = 0;
         
 
-        while (choice != 9) {
+        while (choice != 10) {
         System.out.println("Please choose what to do by the number.");
         System.out.println("1. Create Account");
         System.out.println("2. View which items are checked out.");
@@ -94,9 +99,10 @@ public class Library {
         System.out.println("4. Checkout an Item");
         System.out.println("5. Add item to library (book or audio/visual)");
         System.out.println("6. Add Magazine to library");
-        System.out.println("7. Return book");
+        System.out.println("7. Return book or A/V material.");
         System.out.println("8. Get Fines.");
-        System.out.println("9. Exit");
+        System.out.println("9. Get DueDates.");
+        System.out.println("10. Exit");
         
         choice = getUserChoice();
 
@@ -429,6 +435,26 @@ public class Library {
                 System.out.println("Fines for " + getFineUser.getFirstName() + ": " + getFineUser.getLibraryCard().getFines());
                 break;
             case 9:
+                System.out.println("Get due dates");
+                for(int i = 0; i < users.size(); i++){
+                    User currUser = users.get(i);
+                    System.out.println(currUser.getFirstName() + ":");
+                    // System.out.println(currUser.getLibraryCard().getCheckedOutBooks().size());
+                    currUser.getLibraryCard().getDueDates();
+                    // for(int j = 0; j < currUser.getLibraryCard().getCheckedOutBooks().size(); j++){
+                    //     currUser.getLibraryCard().getDueDates();
+                    // }
+
+                    // for(int j = 0; j < currUser.getLibraryCard().getCheckedOutAV().size(); j++){
+                    //     currUser.getLibraryCard().getDueDates();
+                    // }
+                    // if(currUser.getLibraryCard().getCheckedOutBooks().size() == 0 && currUser.getLibraryCard().getCheckedOutAV().size() == 0){
+                    //     System.out.println("No Books or A/V checkedout for " + currUser.getFirstName());
+                    // }
+                }
+                System.out.println(" ");
+                break;
+            case 10:
                 System.out.println(" Exiting the library system. Goodbye!");
                 System.out.println();
                 break;

@@ -1,8 +1,13 @@
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+
 public class Book extends Item {
     private String author;
     private int dateCheckedOut;
     private boolean bestseller;
     private double value;
+    private LocalDate startDate;
+    private LocalDate dueDate;
 
     public Book(String title, String author, int publicationYear, boolean bestseller, double value) {
         super(title, publicationYear,ItemType.BOOK);
@@ -10,6 +15,9 @@ public class Book extends Item {
         this.dateCheckedOut = -1;
         this.bestseller = bestseller;
         this.value = value;
+        this.startDate = null;
+        this.dueDate = null;
+        
     }
 
     // Getter and setter for author
@@ -46,6 +54,30 @@ public class Book extends Item {
 
     public void setValue(double newVal) {
         value = newVal;
+    }
+
+    public void setStartDate(){
+        startDate = LocalDate.now();
+        System.out.println("startDate set to: " + startDate);
+    }
+
+    public void setDueDate(){
+        if(super.getItemType() == ItemType.BOOK){
+            dueDate = startDate.plusDays(21);
+            System.out.println("DueDate set to: " + dueDate);
+            
+            
+        }
+        if(super.getItemType() == ItemType.AUDIO_VIDEO_MATERIAL){
+            dueDate = startDate.plusDays(14);
+        }
+        if(bestseller == true){
+            dueDate = startDate.minusDays(7);
+        }
+    }
+
+    public LocalDate getDueDate(){
+        return dueDate;
     }
 
     @Override
