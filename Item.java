@@ -7,6 +7,7 @@ public class Item {
     private String editor;
     private int publicationYear;
     private boolean checkedOut;
+    private boolean renewed;
     private int dateCheckedOut;
     private ItemType itemType;
     private LocalDate startDate;
@@ -88,6 +89,7 @@ public class Item {
         dateCheckedOut = date;
     }
 
+
     public void setDueDates(){
         if(itemType == ItemType.BOOK){
             startDate.plusDays(21);
@@ -105,6 +107,10 @@ public class Item {
         startDate.minusDays(7);
     }
     
+
+    public void setRenewedBefore(boolean renewedBefore){this.renewed = renewedBefore;}
+    public boolean getRenewedBefore(){return this.renewed;}
+
     // Add any other common methods here
 
     // Method to display item details (can be overridden by subclasses)
