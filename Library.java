@@ -94,7 +94,11 @@ public class Library {
     Library(TestCases.ClassType type) {
         assert type == TestCases.ClassType.TESTING: "Error: wrong constructor used";
 
-
+        // Create Checkout and Return instances and attach them to each other
+        checkout = new Checkout(this);
+        returnClass = new Return(this);
+        checkout.setReturnClass(returnClass);
+        returnClass.setCheckout(checkout);
     }
 
     public void libraryMenu(){
