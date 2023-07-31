@@ -7,6 +7,7 @@ public class TestCases {
         smallSet = 20;
     public enum ClassType { TESTING }
     TestCases() {
+        //testIfUsersGetUniqueCards();
     }
 
     // Test that creates a number of users to ensure that each user has a unique card id.
@@ -20,7 +21,7 @@ public class TestCases {
         Library library = new Library(ClassType.TESTING);
         createUsers(largeSet, library);
         for(int i = 0; i < library.userCount; i++)
-            System.out.println("User " + (i+1) + "'s LibraryCard ID: " + library.users.get(0).getLibCardNum());
+            System.out.println("User " + (i+1) + "'s LibraryCard ID: " + library.users.get(i).getLibCardNum());
 
         System.out.println("\nChecking if all ID's are unique...");
         // Exhaustively compare each ID to ensure they're unique. -----maybe sort this and then search if time to
@@ -95,15 +96,15 @@ public class TestCases {
 
         // Create generic user and add them to library. Age of user is set to (i+1) to ensure varied age
         for (int i = 0; i < num; i ++) {
-            User user = new User(("Username" + (i+1)),
+            library.addUser(("Username" + (i+1)),
                     "Password" + (i+1),
                     "Email" + (i+1),
                     "FirstName" + (i+1),
                     "LastName" + (i+1),
-                    (i+1), library,
+                    (i+1),
                     "Address" + (i+1),
                     "PhoneNum" + (i+1));
-            users.add(user);
+            users.add(library.users.get(i));
         }
         return users;
     }
