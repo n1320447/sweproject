@@ -4,6 +4,7 @@ public class Item {
     private String editor;
     private int publicationYear;
     private boolean checkedOut;
+    private boolean renewed;
     private int dateCheckedOut;
     private ItemType itemType;
 
@@ -78,6 +79,9 @@ public class Item {
     public void setDateCheckedOut(int date) {
         dateCheckedOut = date;
     }
+
+    public void setRenewedBefore(boolean renewedBefore){this.renewed = renewedBefore;}
+    public boolean getRenewedBefore(){return this.renewed;}
 
     // Add any other common methods here
 
