@@ -38,6 +38,23 @@ public class LibraryCard {
         return checkedOutAV;
     }
 
+    public void getDueDates(){
+        for (int i = 0; i < checkedOutBooks.size(); i++){
+            System.out.print(checkedOutBooks.get(i).getTitle() + " Due: ");
+            System.out.println(checkedOutBooks.get(i).getDueDate());
+        }
+        for (int i = 0; i < checkedOutAV.size(); i++){
+            System.out.print(checkedOutAV.get(i).getTitle() + " Due: ");
+            System.out.println(checkedOutAV.get(i).getDueDate());
+        }
+        for (int i = 0; i < checkedOutMagazines.size(); i++){
+            System.out.println(checkedOutMagazines.get(i).getTitle());
+        }
+        if(checkedOutAV.size() == 0 && checkedOutBooks.size() == 0){
+            System.out.println("No books or AV material checked out.");
+        }
+    }
+
     // Add a method to check out a book for the user associated with this card
 
     //public void checkOutBook(Book book) {
