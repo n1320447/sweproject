@@ -16,6 +16,7 @@ public class Library {
     List<AudioVideoMaterial> avMaterials = new ArrayList<>();
     List<ItemRequest> itemRequestList = new ArrayList<>();
     List<Magazines> magazines = new ArrayList<>();
+    List<ReferenceBook> referenceBooks = new ArrayList<>();
 // Add methods to handle magazines as needed.
     Library(){
         scanner = new Scanner(System.in);
@@ -70,6 +71,14 @@ public class Library {
         magazines.add(mg2);
         magazines.add(mg3);
 
+        ReferenceBook rb1 = new ReferenceBook("Reference Book 1", "Editor1", 2000);
+        ReferenceBook rb2 = new ReferenceBook("Reference Book 2", "Editor1", 2012);
+        ReferenceBook rb3 = new ReferenceBook("Reference Book 3", "Editor1", 2023);
+        
+        referenceBooks.add(rb1);
+        referenceBooks.add(rb2);
+        referenceBooks.add(rb3);
+
         // Set the library in needed classes
         Return.setLibrary(this);
         Checkout.setLibrary(this);
@@ -86,7 +95,7 @@ public class Library {
         int choice = 0;
         
 
-        while (choice != 10) {
+        while (choice != 11) {
         System.out.println("Please choose what to do by the number.");
         System.out.println("1. Create Account");
         System.out.println("2. View which items are checked out.");
@@ -97,7 +106,8 @@ public class Library {
         System.out.println("7. Return book or A/V material.");
         System.out.println("8. Get Fines.");
         System.out.println("9. Get DueDates.");
-        System.out.println("10. Exit");
+        System.out.println("10. View Magazines and ReferenceBooks.");
+        System.out.println("11. Exit Library.");
         
         choice = getUserChoice();
 
@@ -413,11 +423,19 @@ public class Library {
                 }
                 System.out.println(" ");
                 break;
-            case 10:
+            case 11:
                 System.out.println(" Exiting the library system. Goodbye!");
                 System.out.println();
                 break;
-            
+            case 10:
+                System.out.println("view magazines & refence only.");
+                for(int i = 0; i < magazines.size(); i++){
+                    System.out.println(magazines.get(i).getTitle());
+                }
+                for(int i = 0; i < referenceBooks.size(); i++){
+                    System.out.println(referenceBooks.get(i).getTitle());
+                }
+                break;
             default:
                 System.out.println(" Invalid option. Please choose a valid number.");
                 System.out.println();

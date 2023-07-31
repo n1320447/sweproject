@@ -16,7 +16,8 @@ public class Item {
     public enum ItemType {
         BOOK,
         AUDIO_VIDEO_MATERIAL,
-        MAGAZINE
+        MAGAZINE,
+        REFERENCE_BOOK
     }
 
     public Item(String title, int publicationYear, ItemType itemType) {
