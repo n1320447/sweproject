@@ -8,6 +8,7 @@ public class TestCases {
     public enum ClassType { TESTING }
     TestCases() {
         //testIfUsersGetUniqueCards();
+        //testIfLibraryHasUserBasicInfo();
     }
 
     // Test that creates a number of users to ensure that each user has a unique card id.
@@ -69,7 +70,7 @@ public class TestCases {
         // Loop through every user to ensure library keeps basic user info accurately
         int i = 0;
         for(i = 0; i < users.size(); i++) {
-            if (users.get(i).toString() != library.users.get(i).toString()) {
+            if (!users.get(i).toString().equals(library.users.get(i).toString())) {
                 passed = false;
                 break;
             }
