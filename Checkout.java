@@ -67,4 +67,9 @@ public class Checkout {
         book.setDateCheckedOut(library.getDay());
         System.out.println("Book: '" + book.getTitle() + "' has been renewed successfully!");
     }
+    public static void renewAV(AudioVideoMaterial avMaterial, LibraryCard libraryCard){
+        avMaterial.setCheckedOut(true);
+        avMaterial.setDateCheckedOut(library.getDay());
+        System.out.println("AV Material: '" + avMaterial.getTitle() + "' has been renewed successfully!");
+    }
 }

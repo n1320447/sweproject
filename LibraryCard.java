@@ -94,6 +94,22 @@ public class LibraryCard {
         // avmaterial.setDateCheckedOut(date);
     }
 
+    public void renewAV(AudioVideoMaterial avMaterial, int date){
+        if(!avMaterial.isCheckedOut()){
+            System.out.println("AV material: '" + avMaterial.getTitle() + "' is unable to be renewed, as it is not checked out.");
+        }
+        else if(avMaterial.getRenewedBefore() == true) {
+            System.out.println("AV material: '" + avMaterial.getTitle() + "' is unable to be renewed, as it has already once been renewed.");
+        }
+        else if(library.itemRequestList.get(1).item.getTitle() == avMaterial.getTitle()){
+            System.out.println("AV material: '" + avMaterial.getTitle() + "' is unable to be renewed, as there is currently a checkout request for it.");
+        }
+        else{
+            avMaterial.setRenewedBefore(true);
+            Checkout.renewAV(avMaterial, this);
+        }
+    }
+
     // Add a method to return an audio/video material for the user associated with this card
     //public void returnAV(AudioVideoMaterial avmaterial) {
         //checkedOutAV.remove(avmaterial);
