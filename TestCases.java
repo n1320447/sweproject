@@ -15,7 +15,7 @@ public class TestCases {
     public boolean testIfUsersGetUniqueCards() {
         boolean passed = true;
 
-        System.out.println("Beginning unique library card ID test");
+        System.out.println("--------- Beginning unique library card ID test ---------");
         System.out.println("Creating " + largeSet + " users in new Library object...");
 
         Library library = new Library(ClassType.TESTING);
@@ -53,7 +53,38 @@ public class TestCases {
     // Test that creates a number of users to ensure that Library keeps track of basic user info
     // Satisfies requirement 2
     public boolean testIfLibraryHasUserBasicInfo() {
-        return true;
+        boolean passed = true;
+
+        System.out.println("\n\n--------- Beginning library has user information test ---------");
+        System.out.println("Creating " + largeSet + " users in new Library object...\n");
+
+        Library library = new Library(ClassType.TESTING);
+        ArrayList<User> users = createUsers(largeSet, library);
+
+        for(User user: library.users)
+            System.out.println(user.toString());
+
+        System.out.println("\nChecking if library holds user basic information...");
+
+        // Loop through every user to ensure library keeps basic user info accurately
+        int i = 0;
+        for(i = 0; i < users.size(); i++) {
+            if (users.get(i).toString() != library.users.get(i).toString()) {
+                passed = false;
+                break;
+            }
+        }
+
+        if(passed)
+            System.out.println("Result: Test passed.");
+        else {
+            System.out.println("Result: Test failed");
+            System.out.println("Library did not store User " + (i+1) + "'s info correctly");
+            System.out.println("Control group:  " + users.get(i).toString());
+            System.out.println("Library's data: " + library.users.get(i).toString());
+        }
+
+        return passed;
     }
 
     // Test that creates a number of users and checkouts a number of items to ensure that library
