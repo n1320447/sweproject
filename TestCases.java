@@ -3,12 +3,15 @@ import java.util.ArrayList;
 public class TestCases {
 
     private int totalTests = 7;
+
+    public enum ClassType { TESTING }
     TestCases() {
     }
 
     // Test that creates a number of users to ensure that each user has a unique card id.
     // Satisfies requirement 1
     public boolean testIfUsersGetUniqueCards() {
+        System.out.println();
         return true;
     }
 
@@ -131,11 +134,11 @@ public class TestCases {
 
         return refBooks;
     }*/
-    
+
     public void runAllTests() {
         System.out.println("Running all tests");
-        testIfLibraryHasUserBasicInfo();
         testIfUsersGetUniqueCards();
+        testIfLibraryHasUserBasicInfo();
         testLibraryHasUserCheckoutInfo();
         testUserCheckout();
         testUserReturnDates();

@@ -2,12 +2,16 @@ import java.util.ArrayList;
 import java.util.List;
 public class Return {
 
-    private static List<Book> checkedOutBooks = new ArrayList<>();
-    private static List<Magazines> checkedOutMagazines = new ArrayList<>();
-    private static List<AudioVideoMaterial> checkedOutAV = new ArrayList<>();
-    private static Library library;
+    private List<Book> checkedOutBooks = new ArrayList<>();
+    private List<Magazines> checkedOutMagazines = new ArrayList<>();
+    private List<AudioVideoMaterial> checkedOutAV = new ArrayList<>();
+    private Library library;
+    private Checkout checkout;
 
-    public static void returnBook(Book book, LibraryCard libraryCard){
+    Return(Library library) {
+        this.library = library;
+    }
+    public void returnBook(Book book, LibraryCard libraryCard){
         System.out.println("outside returnbook if, checkedOutBooks contains:" + checkedOutBooks);
         double fines;
         if(checkedOutBooks.contains(book)){
@@ -17,7 +21,7 @@ public class Return {
                 libraryCard.changeFines(fines);
 
             checkedOutBooks.remove(book);
-            Checkout.removeBook(book);
+            checkout.removeBook(book);
             book.setCheckedOut(false);
             book.setDateCheckedOut(-1);
 
@@ -50,7 +54,7 @@ public class Return {
         }
     }*/
 
-    public static void returnAV(AudioVideoMaterial avMaterial, LibraryCard libraryCard) {
+    public void returnAV(AudioVideoMaterial avMaterial, LibraryCard libraryCard) {
         System.out.println("outside returnAV if, checkedOutAV contains:" + checkedOutAV);
         double fines;
         if(checkedOutAV.contains(avMaterial)){
@@ -60,7 +64,7 @@ public class Return {
                 libraryCard.changeFines(fines);
 
             checkedOutAV.remove(avMaterial);
-            Checkout.removeAV(avMaterial);
+            checkout.removeAV(avMaterial);
             avMaterial.setCheckedOut(false);
             avMaterial.setDateCheckedOut(-1);
 
@@ -83,22 +87,16 @@ public class Return {
     }
 
     // Method to add book to checkedOutBooks, called by Checkout to maintain records
-    public static void addBook(Book book) {
+    public void addBook(Book book) {
         checkedOutBooks.add(book);
     }
 
     // Method to add AV to checkedOutAV, called by Checkout to maintain records
-    public static void addAV(AudioVideoMaterial av) {
+    public void addAV(AudioVideoMaterial av) {
         checkedOutAV.add(av);
     }
 
-    // Method to tell class the Library that it belongs to. Not sure how else to implement this if class is static
-    public static void setLibrary(Library newLibrary) {
-        library = newLibrary;
-    }
-
-
-    private static double calcFinesBook(Book book, LibraryCard libraryCard) {
+    private double calcFinesBook(Book book, LibraryCard libraryCard) {
         double fine = 0;
         int daysLoaned = library.getDay() - book.getDateCheckedOut();
         int overdueDays = 0;
@@ -117,7 +115,7 @@ public class Return {
         return fine;
     }
 
-    private static double calcFinesAV(AudioVideoMaterial avMaterial, LibraryCard libraryCard) {
+    private double calcFinesAV(AudioVideoMaterial avMaterial, LibraryCard libraryCard) {
         double fine = 0;
         int daysLoaned = library.getDay() - avMaterial.getDateCheckedOut();
         int overdueDays = 0;
@@ -132,5 +130,13 @@ public class Return {
             fine = avMaterial.getValue();
 
         return fine;
+    }
+
+    public void setCheckout(Checkout checkout) {
+        this.checkout = checkout;
+    }
+
+    public Checkout getCheckout() {
+        return checkout;
     }
 }

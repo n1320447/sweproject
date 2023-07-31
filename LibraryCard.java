@@ -7,7 +7,9 @@ public class LibraryCard {
     private List<AudioVideoMaterial> checkedOutAV;
     private double fines;
     private Library library;
-    private List<Magazines> checkedOutMagazines = new ArrayList<>();
+    private Checkout checkout;
+    private Return returnClass;
+    //private List<Magazines> checkedOutMagazines = new ArrayList<>();
 
     public LibraryCard(User user, Library library) {
         this.user = user;
@@ -15,6 +17,8 @@ public class LibraryCard {
         checkedOutAV = new ArrayList<>();
         fines = 0;
         this.library = library;
+        this.checkout = library.getCheckout();
+        this.returnClass = library.getReturn();
     }
 
     // Getters and setters for the user attribute (optional, if needed)
@@ -55,7 +59,7 @@ public class LibraryCard {
     public void checkOutBook(Book book, int date) {
         if (!user.getIsChild() || (user.getIsChild() && checkedOutBooks.size() <= 5)) {
             checkedOutBooks.add(book);
-            Checkout.checkOutBook(book, this);
+            checkout.checkOutBook(book, this);
 
             System.out.println("In LibraryCard class: Book '" + book.getTitle() + "' checked out successfully!");
         } else {
@@ -75,7 +79,7 @@ public class LibraryCard {
         }
         else{
             book.setRenewedBefore(true);
-            Checkout.renewBook(book, this);
+            checkout.renewBook(book, this);
         }
     }
 
@@ -90,7 +94,7 @@ public class LibraryCard {
     public void checkOutAV(AudioVideoMaterial avmaterial, int date) {
         if(!user.getIsChild() || (user.getIsChild() && checkedOutAV.size() <= 5)){
             checkedOutAV.add(avmaterial);
-            Checkout.checkOutAV(avmaterial, this);
+            checkout.checkOutAV(avmaterial, this);
 
             System.out.println("In LibraryCard class: AV material " + avmaterial.getTitle() + " checked out successfully!");
         } else {
@@ -114,7 +118,7 @@ public class LibraryCard {
         }
         else{
             avMaterial.setRenewedBefore(true);
-            Checkout.renewAV(avMaterial, this);
+            checkout.renewAV(avMaterial, this);
         }
     }
 
@@ -132,7 +136,7 @@ public class LibraryCard {
     //}
 
     public void checkOutBook(Book book){
-        Checkout.checkOutBook(book, this);
+        checkout.checkOutBook(book, this);
     }
 
     /*
@@ -141,11 +145,11 @@ public class LibraryCard {
     }*/
 
     public void checkOutAV(AudioVideoMaterial avMaterial){
-        Checkout.checkOutAV(avMaterial, this);
+        checkout.checkOutAV(avMaterial, this);
     }
 
     public void returnBook(Book book){
-        Return.returnBook(book, this);
+        returnClass.returnBook(book, this);
         checkedOutBooks.remove(book);
     }
 
@@ -155,7 +159,7 @@ public class LibraryCard {
     }*/
 
     public void returnAV(AudioVideoMaterial avMaterial){
-        Return.returnAV(avMaterial, this);
+        returnClass.returnAV(avMaterial, this);
         checkedOutAV.remove(avMaterial);
     }
 
@@ -165,9 +169,6 @@ public class LibraryCard {
         }
         for (int i = 0; i < checkedOutBooks.size(); i++){
             System.out.println(checkedOutBooks.get(i).getTitle());
-        }
-        for (int i = 0; i < checkedOutMagazines.size(); i++){
-            System.out.println(checkedOutMagazines.get(i).getTitle());
         }
         if(checkedOutAV.size() == 0 && checkedOutBooks.size() == 0){
             System.out.println("No books or AV material checked out.");
