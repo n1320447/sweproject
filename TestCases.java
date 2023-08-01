@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.time.LocalDate;
 
 public class TestCases {
 
@@ -9,6 +10,7 @@ public class TestCases {
     TestCases() {
         //testIfUsersGetUniqueCards();
         //testIfLibraryHasUserBasicInfo();
+        //testLibraryHasUserCheckoutInfo();
     }
 
     // Test that creates a number of users to ensure that each user has a unique card id.
@@ -41,9 +43,9 @@ public class TestCases {
         }
 
         if(passed)
-            System.out.println("Result: Test passed.");
+            System.out.println("\nResult: Test passed.");
         else {
-            System.out.println("Result: Test failed");
+            System.out.println("\nResult: Test failed");
             System.out.println("User's " + (start+1) + " and " + (index+1) + " have identical Library card ID's");
             System.out.println("User " + (start+1) + ": " + library.users.get(start).getLibCardNum());
             System.out.println("User " + (index+1) + ": " + library.users.get(index).getLibCardNum());
@@ -77,9 +79,9 @@ public class TestCases {
         }
 
         if(passed)
-            System.out.println("Result: Test passed.");
+            System.out.println("\nResult: Test passed.");
         else {
-            System.out.println("Result: Test failed");
+            System.out.println("\nResult: Test failed");
             System.out.println("Library did not store User " + (i+1) + "'s info correctly");
             System.out.println("Control group:  " + users.get(i).toString());
             System.out.println("Library's data: " + library.users.get(i).toString());
@@ -92,7 +94,86 @@ public class TestCases {
     //       can get info on checked out books
     // Satisfies requirement 3
     public boolean testLibraryHasUserCheckoutInfo() {
-        return true;
+        boolean passed = true;
+
+        System.out.println("\n\n--------- Beginning Library checkout test ---------");
+        System.out.println("Creating " + smallSet + " users in new Library object...");
+
+        Library library = new Library(ClassType.TESTING);
+        ArrayList<User> users = createUsers(smallSet, library);
+
+        System.out.println("Adding " + smallSet + " books and audio visual materials into Library");
+        //ArrayList<Book> books =
+        createBooks(smallSet, library);
+        //ArrayList<ReferenceBook> refBooks =
+        //createRefBooks(smallSet, library);
+        //ArrayList<AudioVideoMaterial> avs =
+        createAVs(smallSet, library);
+        //ArrayList<Magazines> mags =
+        //createMags(smallSet, library);
+
+        System.out.println("Checking out a Book and AV material for each user");
+        for(int i = 0; i < users.size(); i++) {
+            library.users.get(i).getLibraryCard().checkOutBook(library.books.get(i), 0);
+            library.users.get(i).getLibraryCard().checkOutAV(library.avMaterials.get(i), 0);
+        }
+
+        System.out.println("Verify Library has checkout info");
+        int i;
+        for (i = 0; i < users.size(); i++) {
+            System.out.println(library.users.get(i).getLibraryCard().getCheckedOutBooks().get(0).toString()
+                    + " / " + library.users.get(i).getLibraryCard().getCheckedOutAV().get(0).toString());
+            // Check that book and avMaterial are checked out from Library
+            if(!(library.books.get(i).isCheckedOut() && library.avMaterials.get(i).isCheckedOut())) {
+                passed = false;
+                break;
+            }
+
+            // Check that the Book due date is accurate
+            boolean best = library.books.get(i).getBestseller();
+            LocalDate startDate = library.books.get(i).getStartDate();
+            LocalDate due = best ? startDate.plusDays(14) : startDate.plusDays(21);
+            if (!library.books.get(i).getDueDate().equals(due)) {
+                passed = false;
+                System.out.println("Result: Test failed");
+                System.out.println("Library did not store User " + (i+1) + "'s Book due date info correctly");
+                System.out.println("Expected: " + due);
+                System.out.println("Result:   " + library.books.get(i).getDueDate());
+                break;
+            }
+
+            // AV due date check
+            due = startDate.plusDays(14);
+            if (!library.avMaterials.get(i).getDueDate().equals(due)) {
+                passed = false;
+                System.out.println("\nResult: Test failed");
+                System.out.println("Library did not store User " + (i+1) + "'s AV due date info correctly");
+                System.out.println("Expected: " + due);
+                System.out.println("Result:   " + library.avMaterials.get(i).getDueDate());
+                break;
+            }
+
+            // Check that fine calculation is accurate past 22 days
+            library.day = 22;
+            library.users.get(i).getLibraryCard().returnBook(library.books.get(i));
+            System.out.println("book fines : " + library.users.get(i).getLibraryCard().getFines()); // del
+            library.users.get(i).getLibraryCard().returnAV(library.avMaterials.get(i));
+            double fines = (library.books.get(i).getBestseller() ? 0.8 : 0.1) + 0.8; // Every user should have this amount of fines
+            if (fines != library.users.get(i).getLibraryCard().getFines()) {
+                passed = false;
+                System.out.println("\nResult: Test failed");
+                System.out.println("Library did not store User " + (i+1) + "'s fine info correctly on turning items in after 22 days");
+                System.out.println("Expected: " + fines);
+                System.out.println("Result:   " + library.users.get(i).getLibraryCard().getFines());
+                break;
+            }
+            library.day = 0;
+        }
+
+        if(passed)
+            System.out.println("Result: Test passed.");
+
+        return passed;
     }
 
     // Test that creates a number of users of varying age and ensures that library
@@ -141,24 +222,25 @@ public class TestCases {
         return users;
     }
 
-    private ArrayList<Book> createBooks(int num) {
+    private ArrayList<Book> createBooks(int num, Library library) {
         ArrayList<Book> books = new ArrayList<>();
 
         // Create num amount of generic books, books at an even i are not bestsellers while odd is.
-        // Value of book is set to i + 0.5
+        // Value of book is set to i + 1.5
         for (int i = 0; i < num; i++) {
             Book book = new Book("Title" + (i + 1),
                     "Author" + (i + 1),
                     i + 1900,
                     (i % 2) == 0,
-                    (double) i + 0.5);
+                    (double) i + 1.5);
             books.add(book);
+            library.addItem((Item) book, book.getItemType());
         }
 
         return books;
     }
 
-    private ArrayList<AudioVideoMaterial> createAVs(int num) {
+    private ArrayList<AudioVideoMaterial> createAVs(int num, Library library) {
         ArrayList<AudioVideoMaterial> avs = new ArrayList<>();
 
         // Create num amount of generic AV Materials with rules similar to createBooks
@@ -166,14 +248,15 @@ public class TestCases {
             AudioVideoMaterial av = new AudioVideoMaterial("Title" + (i + 1),
                     "Director" + (i + 1),
                     i + 1900,
-                    (double) i + 0.5);
+                    (double) i + 1.5);
             avs.add(av);
+            library.addItem((Item) av, av.getItemType());
         }
 
         return avs;
     }
 
-    private ArrayList<Magazines> createMags(int num) {
+    private ArrayList<Magazines> createMags(int num, Library library) {
         ArrayList<Magazines> mags = new ArrayList<>();
 
         // Create num amount of generic Magazines
@@ -182,25 +265,26 @@ public class TestCases {
                     "Director" + (i + 1),
                     i + 1900);
             mags.add(mag);
+            library.addItem((Item) mag, mag.getItemType());
         }
 
         return mags;
     }
 
-    /* Ref books not implemented yet
-    private ArrayList<ReferenceBooks> createRefBooks(int num) {
-        ArrayList<ReferenceBooks> refBooks = new ArrayList<>();
+    private ArrayList<ReferenceBook> createRefBooks(int num, Library library) {
+        ArrayList<ReferenceBook> refBooks = new ArrayList<>();
 
-        // Create num amount of generic Magazines
+        // Create num amount of generic Reference Books
         for (int i = 0; i < num; i++) {
-            ReferenceBooks mag = new ReferenceBooks("Title" + (i + 1),
+            ReferenceBook refBook = new ReferenceBook("Title" + (i + 1),
                     "Author" + (i + 1),
                     i + 1900);
-            mags.add(mag);
+            refBooks.add(refBook);
+            library.addItem((Item) refBook, refBook.getItemType());
         }
 
         return refBooks;
-    }*/
+    }
 
     public void runAllTests() {
         System.out.println("Running all tests");

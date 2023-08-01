@@ -72,8 +72,13 @@ public class Book extends Item {
             dueDate = startDate.plusDays(14);
         }
         if(bestseller == true){
-            dueDate = startDate.minusDays(7);
+            dueDate = dueDate.minusDays(7);
         }
+    }
+
+
+    public LocalDate getStartDate(){
+        return startDate;
     }
 
     public LocalDate getDueDate(){

@@ -662,6 +662,25 @@ public class Library {
 
     }
 
+    // Method to add an item to the Library
+    public void addItem(Item item, Item.ItemType type) {
+        if (type == Item.ItemType.BOOK) {
+            Book book = (Book) item;
+            books.add(book);
+        } else if (type == Item.ItemType.AUDIO_VIDEO_MATERIAL) {
+            AudioVideoMaterial av = (AudioVideoMaterial) item;
+            avMaterials.add(av);
+        } else if (type == Item.ItemType.MAGAZINE) {
+            Magazines mag = (Magazines) item;
+            magazines.add(mag);
+        } else if(type == Item.ItemType.REFERENCE_BOOK) {
+            ReferenceBook refBook = (ReferenceBook) item;
+            referenceBooks.add(refBook);
+        } else {
+            System.out.println("Error adding item into Library of type " + item.getItemType());
+        }
+    }
+
     public Checkout getCheckout() {
         return checkout;
     }

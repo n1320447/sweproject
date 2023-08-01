@@ -60,6 +60,11 @@ public class AudioVideoMaterial extends Item {
         // }
     }
 
+
+    public LocalDate getStartDate(){
+        return startDate;
+    }
+
     public LocalDate getDueDate(){
         return dueDate;
     }
