@@ -9,7 +9,13 @@ public class TestCases {
         smallSet = 20;
     public enum ClassType { TESTING }
     TestCases() {
-        ///testRequestItem();
+        //testRequestItem();
+        // testIfUsersGetUniqueCards();
+        // testIfLibraryHasUserBasicInfo();
+        // testLibraryHasUserCheckoutInfo();
+        //testRenewItem();
+        //testIfUsersGetUniqueCards();
+        //testIfLibraryHasUserBasicInfo();
     }
 
 
@@ -387,6 +393,34 @@ public class TestCases {
     //      checked out only one and only if there are no outstanding requests
     // Satisfies requirement 11
     public boolean testRenewItem() {
+        Boolean passed = true;
+
+
+        System.out.println("--------- Beginning unique Renew Items test ---------");
+        System.out.println("Creating " + smallSet + " users in new Library object...");
+
+        Library library = new Library(ClassType.TESTING);
+        ArrayList<User> users = createUsers(smallSet, library);
+
+        System.out.println("Adding " + smallSet + " books and audio visual materials into Library");
+        createBooks(smallSet, library);
+        // createAVs(smallSet, library);
+
+        for(int i = 0; i < users.size(); i++) {
+            library.users.get(i).getLibraryCard().checkOutBook(library.books.get(i), 0);
+        }
+
+        for(int i = 0; i < users.size(); i++) {
+            System.out.println(library.books.get(i));
+            library.users.get(i).getLibraryCard().renewBook(library.books.get(i), 0);        
+        }
+        
+
+        //add in 100 books 
+        //check out 100 books
+        //renew books
+        //profit
+
         return true;
     }
 
