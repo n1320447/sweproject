@@ -11,6 +11,7 @@ public class TestCases {
         //testIfUsersGetUniqueCards();
         //testIfLibraryHasUserBasicInfo();
         //testLibraryHasUserCheckoutInfo();
+        //testUserCheckout();
     }
 
     // Test that creates a number of users to ensure that each user has a unique card id.
@@ -18,7 +19,7 @@ public class TestCases {
     public boolean testIfUsersGetUniqueCards() {
         boolean passed = true;
 
-        System.out.println("--------- Beginning unique library card ID test ---------");
+        System.out.println("\n--------- Beginning unique library card ID test ---------");
         System.out.println("Creating " + largeSet + " users in new Library object...");
 
         Library library = new Library(ClassType.TESTING);
@@ -92,7 +93,7 @@ public class TestCases {
 
     // Test that creates a number of users and checkouts a number of items to ensure that library
     //       can get info on checked out books
-    // Satisfies requirement 3
+    // Satisfies requirement 3, 6, 7, and 8
     public boolean testLibraryHasUserCheckoutInfo() {
         boolean passed = true;
 
@@ -102,7 +103,7 @@ public class TestCases {
         Library library = new Library(ClassType.TESTING);
         ArrayList<User> users = createUsers(smallSet, library);
 
-        System.out.println("Adding " + smallSet + " books and audio visual materials into Library");
+        System.out.println("Adding " + smallSet + " books and audio visual materials each into Library");
         //ArrayList<Book> books =
         createBooks(smallSet, library);
         //ArrayList<ReferenceBook> refBooks =
@@ -171,7 +172,7 @@ public class TestCases {
         }
 
         if(passed)
-            System.out.println("Result: Test passed.");
+            System.out.println("\nResult: Test passed.");
 
         return passed;
     }
@@ -180,13 +181,65 @@ public class TestCases {
     //       enforces the child item checkout limit and other functionality
     // Satisfies requirement 4 and 5
     public boolean testUserCheckout() {
-        return true;
-    }
+        boolean passed = true;
+        System.out.println("\n\n--------- Beginning unique library card ID test ---------");
+        System.out.println("Adding one child user and one adult user in new Library object...");
 
-    // Test that creates a number of users to test library keeps track of item return dates
-    // Satisfies requirements 6, 7, and 8
-    public boolean testUserReturnDates() {
-        return true;
+        // Create new library, add users, Books, and AVs
+        Library library = new Library(ClassType.TESTING);
+        library.addUser(("UsernameChild"), "PasswordChild", "EmailChild", "FirstNameChild",
+                "LastNameChild", 10, "AddressChild", "PhoneNumChild");
+        library.addUser(("UsernameAdult"), "PasswordAdult", "EmailAdult", "FirstNameAdult",
+                "LastNameAdult", 25, "AddressAdult", "PhoneNumAdult");
+
+        System.out.println("Adding " + smallSet + " books and audio visual materials each into Library");
+        ArrayList<Book> books = createBooks(smallSet, library);
+        ArrayList<AudioVideoMaterial> avs = createAVs(smallSet, library);
+
+        System.out.println("Attempting to checkout " + smallSet + " items to both users with equal distribution "
+                + " between Book and AV");
+
+        for (int i = 0; i < smallSet; i++) {
+            //del
+            System.out.println("Childs checkout out size before attempting checkout " + (i+1) + ": "
+                    + library.users.get(0).getLibraryCard().getCheckedOutBooks().size()
+                    + " and " + library.users.get(0).getLibraryCard().getCheckedOutAV().size());
+
+            if (i > 4) {
+                System.out.println("Attempting to checkout an item for child user above maximum allowed checked out");
+            }
+            // Alternate the type of item each user checks out
+            if (i % 2 == 0) {
+                library.users.get(1).getLibraryCard().checkOutBook(books.get(i), 0);
+                library.users.get(0).getLibraryCard().checkOutAV(avs.get(i), 0);
+            } else {
+                library.users.get(1).getLibraryCard().checkOutAV(avs.get(i), 0);
+                library.users.get(0).getLibraryCard().checkOutBook(books.get(i), 0);
+            }
+
+            // Ensure item did not get checked out for child if limit reached
+            if (i > 4 && avs.get(i).isCheckedOut() && books.get(i).isCheckedOut()) {
+                passed = false;
+                System.out.println("\nResult: Test failed");
+                System.out.println("Child user was allowed to checkout more items than maximum allowed for age restriction");
+                System.out.println("Expected checkout total: 5");
+                System.out.println("Result checkout total:   " + (library.users.get(0).getLibraryCard().getCheckedOutBooks().size()
+                        + library.users.get(0).getLibraryCard().getCheckedOutAV().size()));
+                break;
+            }
+        }
+
+            if(passed)
+                System.out.println("\nResult: Test passed");
+
+        System.out.println("Expected child checkout total: 5");
+        System.out.println("Result child checkout total:   " + (library.users.get(0).getLibraryCard().getCheckedOutBooks().size()
+                + library.users.get(0).getLibraryCard().getCheckedOutAV().size()));
+        System.out.println("Expected adult checkout total: " + smallSet);
+        System.out.println("Result adult checkout total:   " + (library.users.get(1).getLibraryCard().getCheckedOutBooks().size()
+                + library.users.get(1).getLibraryCard().getCheckedOutAV().size()));
+
+        return passed;
     }
 
     // Test that creates a number of users to test if they can request items that arr

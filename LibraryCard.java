@@ -71,7 +71,7 @@ public class LibraryCard {
         //checkedOutAV.add(avmaterial);
     //}
     public void checkOutBook(Book book, int date) {
-        if (!book.isCheckedOut() && (!user.getIsChild() || (user.getIsChild() && (checkedOutBooks.size() + checkedOutAV.size()) <= 5))) {
+        if (!book.isCheckedOut() && (!user.getIsChild() || (user.getIsChild() && (checkedOutBooks.size() + checkedOutAV.size()) < 5))) {
             checkedOutBooks.add(book);
             checkout.checkOutBook(book, this);
 
@@ -79,7 +79,7 @@ public class LibraryCard {
         } else if (book.isCheckedOut()) {
             System.out.println("In LibraryCard class: Unable to check book out: Book already checked out");
         } else {
-            System.out.println("In LibraryCard class: Unable to check book out: maximum items check out reached");
+            System.out.println("In LibraryCard class: Unable to check book out: maximum items checked out reached");
         }
     }
 
@@ -108,7 +108,7 @@ public class LibraryCard {
 
     // Add a method to check out an audio/video material for the user associated with this card
     public void checkOutAV(AudioVideoMaterial avmaterial, int date) {
-        if(!avmaterial.isCheckedOut() && (!user.getIsChild() || (user.getIsChild() && (checkedOutAV.size() + checkedOutBooks.size()) <= 5))){
+        if(!avmaterial.isCheckedOut() && (!user.getIsChild() || (user.getIsChild() && (checkedOutAV.size() + checkedOutBooks.size()) < 5))){
             checkedOutAV.add(avmaterial);
             checkout.checkOutAV(avmaterial, this);
 
