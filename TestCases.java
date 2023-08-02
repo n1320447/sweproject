@@ -93,7 +93,7 @@ public class TestCases {
 
     // Test that creates a number of users and checkouts a number of items to ensure that library
     //       can get info on checked out books
-    // Satisfies requirement 3
+    // Satisfies requirement 3, 6, 7, and 8
     public boolean testLibraryHasUserCheckoutInfo() {
         boolean passed = true;
 
@@ -172,7 +172,7 @@ public class TestCases {
         }
 
         if(passed)
-            System.out.println("Result: Test passed.");
+            System.out.println("\nResult: Test passed.");
 
         return passed;
     }
@@ -240,12 +240,6 @@ public class TestCases {
                 + library.users.get(1).getLibraryCard().getCheckedOutAV().size()));
 
         return passed;
-    }
-
-    // Test that creates a number of users to test library keeps track of item return dates
-    // Satisfies requirements 6, 7, and 8
-    public boolean testUserReturnDates() {
-        return true;
     }
 
     // Test that creates a number of users to test if they can request items that arr
