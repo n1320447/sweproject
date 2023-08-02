@@ -9,7 +9,13 @@ public class TestCases {
         smallSet = 20;
     public enum ClassType { TESTING }
     TestCases() {
-        ///testRequestItem();
+        //testRequestItem();
+        // testIfUsersGetUniqueCards();
+        // testIfLibraryHasUserBasicInfo();
+        // testLibraryHasUserCheckoutInfo();
+        //testRenewItem();
+        //testIfUsersGetUniqueCards();
+        //testIfLibraryHasUserBasicInfo();
     }
 
 
