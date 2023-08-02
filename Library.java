@@ -524,6 +524,8 @@ public class Library {
                         System.out.println();
                         break;
                 }
+                System.out.println("\n");
+                break;
             case 12:
                 System.out.println(" Exiting the library system. Goodbye!");
                 System.out.println();

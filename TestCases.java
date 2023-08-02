@@ -9,13 +9,6 @@ public class TestCases {
         smallSet = 20;
     public enum ClassType { TESTING }
     TestCases() {
-        //testRequestItem();
-        // testIfUsersGetUniqueCards();
-        // testIfLibraryHasUserBasicInfo();
-        // testLibraryHasUserCheckoutInfo();
-        //testRenewItem();
-        //testIfUsersGetUniqueCards();
-        //testIfLibraryHasUserBasicInfo();
     }
 
 
@@ -24,7 +17,7 @@ public class TestCases {
     public boolean testIfUsersGetUniqueCards() {
         boolean passed = true;
 
-        System.out.println("\n--------- Beginning unique library card ID test ---------");
+        System.out.println("\n--------------- Beginning unique library card ID test ---------------");
         System.out.println("Creating " + largeSet + " users in new Library object...");
 
         Library library = new Library(ClassType.TESTING);
@@ -64,7 +57,7 @@ public class TestCases {
     public boolean testIfLibraryHasUserBasicInfo() {
         boolean passed = true;
 
-        System.out.println("\n\n--------- Beginning library has user information test ---------");
+        System.out.println("\n\n--------------- Beginning library has user information test ---------------");
         System.out.println("Creating " + largeSet + " users in new Library object...\n");
 
         Library library = new Library(ClassType.TESTING);
@@ -102,7 +95,7 @@ public class TestCases {
     public boolean testLibraryHasUserCheckoutInfo() {
         boolean passed = true;
 
-        System.out.println("\n\n--------- Beginning Library checkout test ---------");
+        System.out.println("\n\n--------------- Beginning Library checkout test ---------------");
         System.out.println("Creating " + smallSet + " users in new Library object...");
 
         Library library = new Library(ClassType.TESTING);
@@ -118,15 +111,17 @@ public class TestCases {
         //ArrayList<Magazines> mags =
         //createMags(smallSet, library);
 
-        System.out.println("Checking out a Book and AV material for each user");
+        System.out.println("Checking out a Book and AV material for each user...");
         for(int i = 0; i < users.size(); i++) {
+            System.out.println("\n----- User " + (i+1) + " -----");
             library.users.get(i).getLibraryCard().checkOutBook(library.books.get(i), 0);
             library.users.get(i).getLibraryCard().checkOutAV(library.avMaterials.get(i), 0);
         }
 
-        System.out.println("Verify Library has checkout info");
+        System.out.println("\n\n\nVerify Library has checkout info...");
         int i;
         for (i = 0; i < users.size(); i++) {
+            System.out.println("\n\n----- User " + (i+1) + " -----");
             System.out.println(library.users.get(i).getLibraryCard().getCheckedOutBooks().get(0).toString()
                     + " / " + library.users.get(i).getLibraryCard().getCheckedOutAV().get(0).toString());
             // Check that book and avMaterial are checked out from Library
@@ -135,6 +130,7 @@ public class TestCases {
                 break;
             }
 
+            System.out.println("\nChecking if Book due date is accurate...");
             // Check that the Book due date is accurate
             boolean best = library.books.get(i).getBestseller();
             LocalDate startDate = library.books.get(i).getStartDate();
@@ -143,10 +139,12 @@ public class TestCases {
                 passed = false;
                 System.out.println("Result: Test failed");
                 System.out.println("Library did not store User " + (i+1) + "'s Book due date info correctly");
-                System.out.println("Expected: " + due);
-                System.out.println("Result:   " + library.books.get(i).getDueDate());
-                break;
             }
+            System.out.println("Expected: " + due);
+            System.out.println("Result:   " + library.books.get(i).getDueDate());
+            if (!passed)
+                break;
+
 
             // AV due date check
             due = startDate.plusDays(14);
@@ -154,15 +152,16 @@ public class TestCases {
                 passed = false;
                 System.out.println("\nResult: Test failed");
                 System.out.println("Library did not store User " + (i+1) + "'s AV due date info correctly");
-                System.out.println("Expected: " + due);
-                System.out.println("Result:   " + library.avMaterials.get(i).getDueDate());
-                break;
             }
+            System.out.println("Expected: " + due);
+            System.out.println("Result:   " + library.avMaterials.get(i).getDueDate());
+            if (!passed)
+                break;
 
             // Check that fine calculation is accurate past 22 days
+            System.out.println("\nChecking that Library fine calculation is accurate past 22 days...");
             library.day = 22;
             library.users.get(i).getLibraryCard().returnBook(library.books.get(i));
-            System.out.println("book fines : " + library.users.get(i).getLibraryCard().getFines()); // del
             library.users.get(i).getLibraryCard().returnAV(library.avMaterials.get(i));
             double fines = (library.books.get(i).getBestseller() ? 0.8 : 0.1) + 0.8; // Every user should have this amount of fines
             if (fines != library.users.get(i).getLibraryCard().getFines()) {
@@ -170,10 +169,12 @@ public class TestCases {
                 System.out.println("\nResult: Test failed");
                 System.out.println("Library did not store User " + (i+1) + "'s fine info correctly on turning "
                         + "items in after 22 days");
-                System.out.println("Expected: " + fines);
-                System.out.println("Result:   " + library.users.get(i).getLibraryCard().getFines());
-                break;
             }
+            System.out.println("Expected: " + fines);
+            System.out.println("Result:   " + library.users.get(i).getLibraryCard().getFines());
+            if (!passed)
+                break;
+
             library.day = 0;
         }
 
@@ -188,7 +189,7 @@ public class TestCases {
     // Satisfies requirement 4 and 5
     public boolean testUserCheckout() {
         boolean passed = true;
-        System.out.println("\n\n--------- Beginning unique library card ID test ---------");
+        System.out.println("\n\n--------------- Beginning unique library card ID test ---------------");
         System.out.println("Adding one child user and one adult user in new Library object...");
 
         // Create new library, add users, Books, and AVs
@@ -256,7 +257,7 @@ public class TestCases {
     // Satisfies requirement 10
     public boolean testRequestItem() {
         boolean passed = true;
-        System.out.println("\n\n--------- Beginning request system test ---------");
+        System.out.println("\n\n--------------- Beginning request system test ---------------");
         System.out.println("Creating " + smallSet + " users in new Library object...");
 
         Library library = new Library(ClassType.TESTING);
