@@ -599,12 +599,9 @@ public class Library {
     }
 
     public boolean addRequest(LibraryCard card, Item item) {
-        if (item.isCheckedOut()) // might not need this
-            return false;
-
         // Check if there is already a request for the item. Only 1 outstanding request allowed per item
         for (ItemRequest request: itemRequestList)
-            if (request.item == item)
+            if (request.item.equals(item))
                 return false;
 
         ItemRequest request = new ItemRequest(card, item);
@@ -620,7 +617,7 @@ public class Library {
     // Method is called when an item is returned. If the item has an outstanding request,
     // then item is automatically checked out to the requesting user.
     // Returns null if there is no requests for book
-    public LibraryCard checkRequests(Item returnedItem) {
+    public LibraryCard checkRequestsOnReturn(Item returnedItem) {
         for (ItemRequest request: itemRequestList)
             if(request.item == returnedItem) {
                 if (returnedItem.getItemType() == Item.ItemType.BOOK){
@@ -628,11 +625,11 @@ public class Library {
                     User user  = request.card.getUser();
                     System.out.println(user.getFirstName() + " " + user.getLastName() + " requested book "
                             + book.getTitle() + ", attempting to check out book");
-                    //request.card.checkOutBook(book, getDay());
+                    request.card.checkOutBook(book, getDay());
                 }
                 else {
                     AudioVideoMaterial av = (AudioVideoMaterial) returnedItem;
-                    //request.card.checkOutAV(av, getDay());
+                    request.card.checkOutAV(av, getDay());
                 }
                 removeRequest(request);
                 return request.card;

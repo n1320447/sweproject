@@ -71,7 +71,7 @@ public class AudioVideoMaterial extends Item {
 
     @Override
     public String toString() {
-        return "Book{" +
+        return "AV{" +
                "title='" + getTitle() + '\'' + // Use the getter method for the title
                ", author='" + director + '\'' +
                ", publicationYear=" + getPublicationYear() + // Use the getter method for the publication year

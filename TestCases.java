@@ -1,18 +1,17 @@
 import java.util.ArrayList;
 import java.time.LocalDate;
+import java.util.NoSuchElementException;
 
 public class TestCases {
 
-    private static final int totalTests = 7,
+    private static final int totalTests = 6,
         largeSet = 100,
         smallSet = 20;
     public enum ClassType { TESTING }
     TestCases() {
-        //testIfUsersGetUniqueCards();
-        //testIfLibraryHasUserBasicInfo();
-        //testLibraryHasUserCheckoutInfo();
-        //testUserCheckout();
+        testRequestItem();
     }
+
 
     // Test that creates a number of users to ensure that each user has a unique card id.
     // Satisfies requirement 1
@@ -163,7 +162,8 @@ public class TestCases {
             if (fines != library.users.get(i).getLibraryCard().getFines()) {
                 passed = false;
                 System.out.println("\nResult: Test failed");
-                System.out.println("Library did not store User " + (i+1) + "'s fine info correctly on turning items in after 22 days");
+                System.out.println("Library did not store User " + (i+1) + "'s fine info correctly on turning "
+                        + "items in after 22 days");
                 System.out.println("Expected: " + fines);
                 System.out.println("Result:   " + library.users.get(i).getLibraryCard().getFines());
                 break;
@@ -201,7 +201,7 @@ public class TestCases {
 
         for (int i = 0; i < smallSet; i++) {
             //del
-            System.out.println("Childs checkout out size before attempting checkout " + (i+1) + ": "
+            System.out.println("Child's checkout out size before attempting checkout " + (i+1) + ": "
                     + library.users.get(0).getLibraryCard().getCheckedOutBooks().size()
                     + " and " + library.users.get(0).getLibraryCard().getCheckedOutAV().size());
 
@@ -223,7 +223,8 @@ public class TestCases {
                 System.out.println("\nResult: Test failed");
                 System.out.println("Child user was allowed to checkout more items than maximum allowed for age restriction");
                 System.out.println("Expected checkout total: 5");
-                System.out.println("Result checkout total:   " + (library.users.get(0).getLibraryCard().getCheckedOutBooks().size()
+                System.out.println("Result checkout total:   "
+                        + (library.users.get(0).getLibraryCard().getCheckedOutBooks().size()
                         + library.users.get(0).getLibraryCard().getCheckedOutAV().size()));
                 break;
             }
@@ -233,20 +234,153 @@ public class TestCases {
                 System.out.println("\nResult: Test passed");
 
         System.out.println("Expected child checkout total: 5");
-        System.out.println("Result child checkout total:   " + (library.users.get(0).getLibraryCard().getCheckedOutBooks().size()
+        System.out.println("Result child checkout total:   "
+                + (library.users.get(0).getLibraryCard().getCheckedOutBooks().size()
                 + library.users.get(0).getLibraryCard().getCheckedOutAV().size()));
         System.out.println("Expected adult checkout total: " + smallSet);
-        System.out.println("Result adult checkout total:   " + (library.users.get(1).getLibraryCard().getCheckedOutBooks().size()
+        System.out.println("Result adult checkout total:   "
+                + (library.users.get(1).getLibraryCard().getCheckedOutBooks().size()
                 + library.users.get(1).getLibraryCard().getCheckedOutAV().size()));
 
         return passed;
     }
 
-    // Test that creates a number of users to test if they can request items that arr
+    // Test that creates a number of users to test if they can request items that are
     //      currently checked out
     // Satisfies requirement 10
     public boolean testRequestItem() {
-        return true;
+        boolean passed = true;
+        System.out.println("\n\n--------- Beginning request system test ---------");
+        System.out.println("Creating " + smallSet + " users in new Library object...");
+
+        Library library = new Library(ClassType.TESTING);
+        ArrayList<User> users = createUsers(smallSet, library);
+
+        System.out.println("Adding " + smallSet + " books and audio visual materials each into Library");
+        ArrayList<Book> books = createBooks(smallSet, library);
+        ArrayList<AudioVideoMaterial> avs = createAVs(smallSet, library);
+        Book book;
+        AudioVideoMaterial av;
+
+        System.out.println("Checking out one Book and one AV to each user");
+        for(int i = 0; i < library.userCount; i++) {
+            library.users.get(i).getLibraryCard().checkOutBook(books.get(i), 0);
+            library.users.get(i).getLibraryCard().checkOutAV(avs.get(i), 0);
+        }
+
+        System.out.println("\nRequesting one Book and one AV item per user...");
+        boolean added;
+        for(int i = 0; i < library.userCount; i++) {
+            if (i > 0) {
+                added = library.addRequest(library.users.get(i).getLibraryCard(), (Item) books.get(i-1));
+                added = (added && library.addRequest(library.users.get(i).getLibraryCard(), (Item) avs.get(i - 1)));
+            } else {
+                added = library.addRequest(library.users.get(0).getLibraryCard(), (Item) books.get(smallSet-1));
+                added = (added && library.addRequest(library.users.get(0).getLibraryCard(), (Item) avs.get(smallSet - 1)));
+            }
+
+            // If a single request fails to be added, test fails and exits
+            if(!added) {
+                passed = false;
+                System.out.println("\nTest Failed");
+                System.out.println("One or more of User " + i+1 + "'s requests have failed to be added");
+                System.out.println("Expected size of request list: " + ((i+1)*2));
+                System.out.println("Result list size:              " + library.itemRequestList.size());
+                break;
+            }
+        }
+
+        // Skip this step of test if already failed in previous section
+        if(passed) {
+            System.out.println("\nAttempting to request books and av's that already have an outstanding request...");
+            added = false;
+            for (int i = 0; i < library.userCount; i ++) {
+                if (i < (smallSet-1)) {
+                    added = library.addRequest(library.users.get(i).getLibraryCard(), (Item) books.get(i+1));
+                    added = (added || library.addRequest(library.users.get(i).getLibraryCard(), (Item) avs.get(i+1)));
+                } else {
+                    added = library.addRequest(library.users.get(smallSet-1).getLibraryCard(), (Item) books.get(0));
+                    added = (added || library.addRequest(library.users.get(smallSet-1).getLibraryCard(), (Item) avs.get(0)));
+                }
+
+                // If a single request is added while there is another outstanding request for that item, test fails and exits
+                if(added) {
+                    passed = false;
+                    System.out.println("\nTest Failed");
+                    System.out.println("One or more of User " + i + "'s requests on a item that already "
+                            + " has a request was accepted");
+                    System.out.println("Expected size of request list: " + (smallSet*2));
+                    System.out.println("Result list size:              " + library.itemRequestList.size());
+                    break;
+                }
+            }
+        }
+
+        // Skip this step of test if already failed in previous section
+        if (passed) {
+            System.out.println("\nCheck if Library will fulfill outstanding requests when a user returns an Item");
+            for (int i = 0; i < smallSet; i++) {
+                library.users.get(i).getLibraryCard().returnBook(library.books.get(i));
+                library.users.get(i).getLibraryCard().returnAV(library.avMaterials.get(i));
+            }
+
+            // Check if each item has been re-checked out to the correct user
+            for (int i = 0; i < smallSet; i++) {
+                System.out.println("\nUser " + (i+1) + " now has: ");
+                try {
+                    if (i > 0) {
+                        // Checks if book is still checked out, if the requested book and av are the
+                        //      ones the user has, in that order.
+                        book = library.users.get(i).getLibraryCard().getCheckedOutBooks().get(0);
+                        av = library.users.get(i).getLibraryCard().getCheckedOutAV().get(0);
+                        if (!library.books.get(i).isCheckedOut()
+                                || !book.toString().equals(books.get(i - 1).toString())
+                                || !av.toString().equals(avs.get(i - 1).toString())) {
+                            passed = false;
+                            System.out.println("\nTest Failed");
+                            System.out.println("One or more requests of User " + (i+1) + " was not fulfilled");
+                        }
+
+                        System.out.println("Expected Book to be checked out: " + books.get(i - 1).toString());
+                        System.out.println("Expected AV to be checked out:   " + avs.get(i - 1).toString());
+                    } else {
+                        book = library.users.get(0).getLibraryCard().getCheckedOutBooks().get(0);
+                        av = library.users.get(0).getLibraryCard().getCheckedOutAV().get(0);
+                        if (!(library.books.get(smallSet-1).isCheckedOut()
+                               && book.toString().equals(books.get(smallSet-1).toString())
+                               && av.toString().equals(avs.get(smallSet-1).toString())) ) {
+                            passed = false;
+                            System.out.println("\nTest Failed");
+                            System.out.println("One or more requests of User " + (i+1) + " was not fulfilled");
+                        }
+                        System.out.println("Expected Book to be checked out:  " + books.get(smallSet-1).toString());
+                        System.out.println("Expected AV to be checked out:    " + avs.get(smallSet-1).toString());
+                    }
+                    System.out.println("Result Book checked out:          "
+                            + library.users.get(i).getLibraryCard().getCheckedOutBooks().get(0).toString());
+                    System.out.println("Result AV checked out:            "
+                            + library.users.get(i).getLibraryCard().getCheckedOutAV().get(0).toString());
+                } catch(ArrayIndexOutOfBoundsException e) {
+                    passed = false;
+                    System.out.println("\nTest Failed");
+                    System.out.println("One or more Items were not rechecked out to user" + (i+1));
+                    System.out.println("Expected Book total checked out:  2");
+                    System.out.println("Expected AV total checked out:    2");
+                    System.out.println("Result Book total checked out:    "
+                            + library.users.get(i).getLibraryCard().getCheckedOutBooks().size());
+                    System.out.println("Result AV total checked out:      "
+                            + library.users.get(i).getLibraryCard().getCheckedOutAV().size());
+                }
+
+                if(!passed)
+                    break;
+            }
+        }
+
+        if (passed)
+            System.out.println("\nResult: Test passed");
+
+        return passed;
     }
 
     // Test that creates a number of users to test if each user can renew a book that they
@@ -345,7 +479,6 @@ public class TestCases {
         testIfLibraryHasUserBasicInfo();
         testLibraryHasUserCheckoutInfo();
         testUserCheckout();
-        testUserReturnDates();
         testRequestItem();
         testRenewItem();
         System.out.println("All tests complete");

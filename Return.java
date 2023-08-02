@@ -27,7 +27,7 @@ public class Return {
 
             // Check if there is request out for book
             LibraryCard reloanedCard;
-            reloanedCard = library.checkRequests((Item)book);
+            reloanedCard = library.checkRequestsOnReturn((Item)book);
             if (reloanedCard == null) {
                 System.out.println("Book: " + book.getTitle() + " has been returned successfully.");
             } else {
@@ -41,18 +41,6 @@ public class Return {
             System.out.println("Book: " + book.getTitle() + " is not checked out.");
         }
     }
-
-    /* Cant Checkout/return magazines
-    public static void returnMagazine(Magazines magazine, LibraryCard libraryCard){
-        if(checkedOutMagazines.contains(magazine)){
-            checkedOutMagazines.remove(magazine);
-            magazine.setCheckedOut(false);
-            System.out.println("Magazine: " + magazine.getTitle() + " has been returned successfully.");
-        }
-        else{
-            System.out.println("Magazine: " + magazine.getTitle() + " is not checked out.");
-        }
-    }*/
 
     public void returnAV(AudioVideoMaterial avMaterial, LibraryCard libraryCard) {
         System.out.println("outside returnAV if, checkedOutAV contains:" + checkedOutAV);
@@ -70,7 +58,7 @@ public class Return {
 
             // Check if there is request out for book
             LibraryCard reloanedCard;
-            reloanedCard = library.checkRequests((Item)avMaterial);
+            reloanedCard = library.checkRequestsOnReturn((Item)avMaterial);
             if (reloanedCard == null) {
                 System.out.println("AudioVisualMaterial: " + avMaterial.getTitle() + " has been returned successfully.");
             } else {
