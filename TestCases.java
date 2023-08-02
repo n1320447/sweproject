@@ -189,7 +189,7 @@ public class TestCases {
     // Satisfies requirement 4 and 5
     public boolean testUserCheckout() {
         boolean passed = true;
-        System.out.println("\n\n--------------- Beginning unique library card ID test ---------------");
+        System.out.println("\n\n--------------- Beginning user checkout test ---------------");
         System.out.println("Adding one child user and one adult user in new Library object...");
 
         // Create new library, add users, Books, and AVs
@@ -199,28 +199,28 @@ public class TestCases {
         library.addUser(("UsernameAdult"), "PasswordAdult", "EmailAdult", "FirstNameAdult",
                 "LastNameAdult", 25, "AddressAdult", "PhoneNumAdult");
 
-        System.out.println("Adding " + smallSet + " books and audio visual materials each into Library");
+        System.out.println("Adding " + smallSet + " books and audio visual materials each into Library...");
         ArrayList<Book> books = createBooks(smallSet, library);
         ArrayList<AudioVideoMaterial> avs = createAVs(smallSet, library);
 
-        System.out.println("Attempting to checkout " + smallSet + " items to both users with equal distribution "
-                + " between Book and AV");
+        System.out.println("Attempting to checkout " + smallSet + " items to both users with equal distribution"
+                + " between Book and AV...");
 
         for (int i = 0; i < smallSet; i++) {
-            //del
-            System.out.println("Child's checkout out size before attempting checkout " + (i+1) + ": "
-                    + library.users.get(0).getLibraryCard().getCheckedOutBooks().size()
-                    + " and " + library.users.get(0).getLibraryCard().getCheckedOutAV().size());
-
             if (i > 4) {
+                System.out.println("\n\nAttempt #" + (i+1) + " at checking out an item for each user");
                 System.out.println("Attempting to checkout an item for child user above maximum allowed checked out");
-            }
+            } else
+                System.out.println("\n\nChecking out item #" + (i+1) + " for each user");
+            System.out.println("\nChild user:");
             // Alternate the type of item each user checks out
             if (i % 2 == 0) {
-                library.users.get(1).getLibraryCard().checkOutBook(books.get(i), 0);
                 library.users.get(0).getLibraryCard().checkOutAV(avs.get(i), 0);
+                System.out.println("\nAdult user:");
+                library.users.get(1).getLibraryCard().checkOutBook(books.get(i), 0);
             } else {
                 library.users.get(1).getLibraryCard().checkOutAV(avs.get(i), 0);
+                System.out.println("\nAdult user:");
                 library.users.get(0).getLibraryCard().checkOutBook(books.get(i), 0);
             }
 
@@ -263,19 +263,20 @@ public class TestCases {
         Library library = new Library(ClassType.TESTING);
         ArrayList<User> users = createUsers(smallSet, library);
 
-        System.out.println("Adding " + smallSet + " books and audio visual materials each into Library");
+        System.out.println("Adding " + smallSet + " books and audio visual materials each into Library...");
         ArrayList<Book> books = createBooks(smallSet, library);
         ArrayList<AudioVideoMaterial> avs = createAVs(smallSet, library);
         Book book;
         AudioVideoMaterial av;
 
-        System.out.println("Checking out one Book and one AV to each user");
+        System.out.println("Checking out one Book and one AV to each user...");
         for(int i = 0; i < library.userCount; i++) {
+            System.out.println("\n----- User " + (i+1) + " -----");
             library.users.get(i).getLibraryCard().checkOutBook(books.get(i), 0);
             library.users.get(i).getLibraryCard().checkOutAV(avs.get(i), 0);
         }
 
-        System.out.println("\nRequesting one Book and one AV item per user...");
+        System.out.println("\n\nRequesting one Book and one AV item per user...");
         boolean added;
         for(int i = 0; i < library.userCount; i++) {
             if (i > 0) {
@@ -294,6 +295,8 @@ public class TestCases {
                 System.out.println("Expected size of request list: " + ((i+1)*2));
                 System.out.println("Result list size:              " + library.itemRequestList.size());
                 break;
+            } else {
+                System.out.println("User " + (i+1) + "'s request status: " + added);
             }
         }
 
@@ -327,13 +330,14 @@ public class TestCases {
         if (passed) {
             System.out.println("\nCheck if Library will fulfill outstanding requests when a user returns an Item");
             for (int i = 0; i < smallSet; i++) {
+                System.out.println("\nTurning in user " + (i+1) + "'s items");
                 library.users.get(i).getLibraryCard().returnBook(library.books.get(i));
                 library.users.get(i).getLibraryCard().returnAV(library.avMaterials.get(i));
             }
 
             // Check if each item has been re-checked out to the correct user
             for (int i = 0; i < smallSet; i++) {
-                System.out.println("\nUser " + (i+1) + " now has: ");
+                System.out.println("\n--- User " + (i+1) + " now has ---");
                 try {
                     if (i > 0) {
                         // Checks if book is still checked out, if the requested book and av are the
@@ -363,9 +367,9 @@ public class TestCases {
                         System.out.println("Expected Book to be checked out:  " + books.get(smallSet-1).toString());
                         System.out.println("Expected AV to be checked out:    " + avs.get(smallSet-1).toString());
                     }
-                    System.out.println("Result Book checked out:          "
+                    System.out.println("Result Book checked out:         "
                             + library.users.get(i).getLibraryCard().getCheckedOutBooks().get(0).toString());
-                    System.out.println("Result AV checked out:            "
+                    System.out.println("Result AV checked out:           "
                             + library.users.get(i).getLibraryCard().getCheckedOutAV().get(0).toString());
                 } catch(ArrayIndexOutOfBoundsException e) {
                     passed = false;
@@ -397,21 +401,25 @@ public class TestCases {
         Boolean passed = true;
 
 
-        System.out.println("--------- Beginning unique Renew Items test ---------");
+        System.out.println("--------------- Beginning unique Renew Items test ---------------");
         System.out.println("Creating " + smallSet + " users in new Library object...");
 
         Library library = new Library(ClassType.TESTING);
         ArrayList<User> users = createUsers(smallSet, library);
 
-        System.out.println("Adding " + smallSet + " books and audio visual materials into Library");
+        System.out.println("Adding " + smallSet + " books and audio visual materials into Library...");
         createBooks(smallSet, library);
         // createAVs(smallSet, library);
 
         for(int i = 0; i < users.size(); i++) {
+            System.out.println("\n--- User " + (i+1) + " ---");
             library.users.get(i).getLibraryCard().checkOutBook(library.books.get(i), 0);
         }
 
+
+        System.out.println("\nAttempting to renew each users item....");
         for(int i = 0; i < users.size(); i++) {
+            System.out.println("\n--- User " + (i+1) + " ---");
             System.out.println(library.books.get(i));
             library.users.get(i).getLibraryCard().renewBook(library.books.get(i), 0);        
         }
