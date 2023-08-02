@@ -90,7 +90,7 @@ public class LibraryCard {
         else if(book.getRenewedBefore() == true) {
             System.out.println("Book: '" + book.getTitle() + "' is unable to be renewed, as it has already once been renewed.");
         }
-        else if(library.itemRequestList.get(0).item.getTitle() == book.getTitle()){
+        else if(!library.itemRequestList.isEmpty() && library.itemRequestList.get(0).item.getTitle() == book.getTitle()){
             System.out.println("Book: '" + book.getTitle() + "' is unable to be renewed, as there is currently a checkout request for it.");
         }
         else{
