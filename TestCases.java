@@ -9,7 +9,7 @@ public class TestCases {
         smallSet = 20;
     public enum ClassType { TESTING }
     TestCases() {
-        testRequestItem();
+        ///testRequestItem();
     }
 
 
@@ -474,13 +474,23 @@ public class TestCases {
     }
 
     public void runAllTests() {
+        int amountPassed = 0;
         System.out.println("Running all tests");
-        testIfUsersGetUniqueCards();
-        testIfLibraryHasUserBasicInfo();
-        testLibraryHasUserCheckoutInfo();
-        testUserCheckout();
-        testRequestItem();
-        testRenewItem();
-        System.out.println("All tests complete");
+        if (testIfUsersGetUniqueCards())
+            amountPassed++;
+        if(testIfLibraryHasUserBasicInfo())
+            amountPassed++;
+        if(testLibraryHasUserCheckoutInfo())
+            amountPassed++;
+        if(testUserCheckout())
+            amountPassed++;
+        if(testRequestItem())
+            amountPassed++;
+        if(testRenewItem())
+            amountPassed++;
+        System.out.println("\n\n----- All tests complete -----");
+        System.out.println("Results:");
+        System.out.println("Total tests:  " + totalTests);
+        System.out.println("Total passed: " + amountPassed + "\n\n");
     }
 }

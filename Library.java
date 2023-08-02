@@ -119,7 +119,7 @@ public class Library {
         int choice = 0;
         
 
-        while (choice != 11) {
+        while (choice != 12) {
         System.out.println("Please choose what to do by the number.");
         System.out.println("1. Create Account");
         System.out.println("2. View which items are checked out.");
@@ -131,7 +131,8 @@ public class Library {
         System.out.println("8. Get Fines.");
         System.out.println("9. Get DueDates.");
         System.out.println("10. View Magazines and ReferenceBooks.");
-        System.out.println("11. Exit Library.");
+        System.out.println("11. Debug: Run test cases.");
+        System.out.println("12. Exit Library.");
         
         choice = getUserChoice();
 
@@ -484,6 +485,46 @@ public class Library {
                 System.out.println(" ");
                 break;
             case 11:
+                System.out.println("Enter which test to run.");
+                System.out.println("1. Unique ID system            (Requirements: 1)");
+                System.out.println("2. User basic info retrieval   (Requirements: 2)");
+                System.out.println("3. Checkout info retrieval     (Requirements: 3, 6, 7, 8)");
+                System.out.println("4. Checkout functionality      (Requirements: 4, 5)");
+                System.out.println("5. Request                     (Requirements: 10)");
+                System.out.println("6. Renew                       (Requirements: 11)");
+                System.out.println("7. Run all tests");
+                int testReturn = getUserChoice();
+
+                TestCases test = new TestCases();
+
+                switch (testReturn) {
+                    case 1:
+                        test.testIfUsersGetUniqueCards();
+                        break;
+                    case 2:
+                        test.testIfLibraryHasUserBasicInfo();
+                        break;
+                    case 3:
+                        test.testLibraryHasUserCheckoutInfo();
+                        break;
+                    case 4:
+                        test.testUserCheckout();
+                        break;
+                    case 5:
+                        test.testRequestItem();
+                        break;
+                    case 6:
+                        test.testRenewItem();
+                        break;
+                    case 7:
+                        test.runAllTests();
+                        break;
+                    default:
+                        System.out.println(" Invalid option. Please choose a valid number.");
+                        System.out.println();
+                        break;
+                }
+            case 12:
                 System.out.println(" Exiting the library system. Goodbye!");
                 System.out.println();
                 break;
