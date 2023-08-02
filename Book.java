@@ -95,5 +95,4 @@ public class Book extends Item {
                ", checkedOut=" + isCheckedOut() +
                '}';
     }
-    // ... (rest of the code specific to books)
 }

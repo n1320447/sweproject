@@ -27,7 +27,7 @@ public class Return {
 
             // Check if there is request out for book
             LibraryCard reloanedCard;
-            reloanedCard = library.checkRequests((Item)book);
+            reloanedCard = library.checkRequestsOnReturn((Item)book);
             if (reloanedCard == null) {
                 System.out.println("Book: " + book.getTitle() + " has been returned successfully.");
             } else {
@@ -70,7 +70,7 @@ public class Return {
 
             // Check if there is request out for book
             LibraryCard reloanedCard;
-            reloanedCard = library.checkRequests((Item)avMaterial);
+            reloanedCard = library.checkRequestsOnReturn((Item)avMaterial);
             if (reloanedCard == null) {
                 System.out.println("AudioVisualMaterial: " + avMaterial.getTitle() + " has been returned successfully.");
             } else {
