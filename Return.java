@@ -42,18 +42,6 @@ public class Return {
         }
     }
 
-    /* Cant Checkout/return magazines
-    public static void returnMagazine(Magazines magazine, LibraryCard libraryCard){
-        if(checkedOutMagazines.contains(magazine)){
-            checkedOutMagazines.remove(magazine);
-            magazine.setCheckedOut(false);
-            System.out.println("Magazine: " + magazine.getTitle() + " has been returned successfully.");
-        }
-        else{
-            System.out.println("Magazine: " + magazine.getTitle() + " is not checked out.");
-        }
-    }*/
-
     public void returnAV(AudioVideoMaterial avMaterial, LibraryCard libraryCard) {
         System.out.println("outside returnAV if, checkedOutAV contains:" + checkedOutAV);
         double fines;
