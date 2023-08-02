@@ -277,6 +277,7 @@ public class TestCases {
         }
 
         System.out.println("\n\nRequesting one Book and one AV item per user...");
+        System.out.println("Expected: true");
         boolean added;
         for(int i = 0; i < library.userCount; i++) {
             if (i > 0) {
@@ -303,6 +304,7 @@ public class TestCases {
         // Skip this step of test if already failed in previous section
         if(passed) {
             System.out.println("\nAttempting to request books and av's that already have an outstanding request...");
+            System.out.println("Expected: false");
             added = false;
             for (int i = 0; i < library.userCount; i ++) {
                 if (i < (smallSet-1)) {
@@ -322,6 +324,8 @@ public class TestCases {
                     System.out.println("Expected size of request list: " + (smallSet*2));
                     System.out.println("Result list size:              " + library.itemRequestList.size());
                     break;
+                } else {
+                    System.out.println("User " + (i+1) + "'s request status: " + added);
                 }
             }
         }
